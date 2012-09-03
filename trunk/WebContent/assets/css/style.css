@@ -1,32 +1,45 @@
 @CHARSET "ISO-8859-1";
 
 .customPanel .ui-widget-header {
-	font-size: 12px !important;
+	font-size: 13px !important;
 }
 
 .customPanel label {
-	font-size: 12px !important;
+	font-size: 13px !important;
 }
 
 .customPanel .ui-inputfield {
-	font-size: 12px !important;
+	font-size: 13px !important;
 }
 
 .customBtLogin {
-	font-size: 12px !important;
-	margin: 0 !important;
+	font-size: 13px !important;
+	margin-left: 0 !important;
 	float: none!impportant;
 }
 
 .ui-growl-message span,p {
-	font-size: 12px !important;
+	font-size: 13px !important;
 }
 
 .customPanel {
-	width:230px;
-	float:none;
- 	margin-left: auto;
-    margin-right: auto;
-	margin-top: 15%;
+	width: 285px;
+	/*-moz-box-shadow: 3px 3px 3px #888;
+	-webkit-box-shadow: 3px 3px 3px #888;
 	box-shadow: 3px 3px 3px #888;
+	-ms-filter:	"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#888')";*/
+}
+
+.content {
+	width: 290px;
+	margin: 0 auto;
+	margin-top: 15%;
+}
+
+.bodyCustom {
+	background: #f2f1f1;
+}
+
+.ui-messages span{
+	font-size: 10px !important;
 }

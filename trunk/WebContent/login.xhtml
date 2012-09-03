@@ -6,21 +6,25 @@
 	<title>WebCópias</title>
 	<link rel="stylesheet" href="assets/css/style.css" />
 </h:head>
-<h:body>
-	<h:form id="form">
-		<p:panelGrid columns="2" styleClass="customPanel">
-			<f:facet name="header">Login</f:facet>
-
-			<h:outputLabel for="nmUsuario" value="Usuário:" />
-			<p:inputText id="nmUsuario" required="true" label="Usuario"	value="#{login.user}" />
-
-			<h:outputLabel for="nmSenha" value="Senha:" />
-			<p:password id="nmSenha" required="true" label="Senha" value="#{login.password}" />
-
-			<f:facet name="footer">
-				<p:commandButton type="button" actionListener="#{login.checkLogin}"	value="Entrar" icon="ui-icon-locked" ajax="false" styleClass="customBtLogin" />
-			</f:facet>
-		</p:panelGrid>
-	</h:form>
+<h:body styleClass="bodyCustom">
+	<div class="content">
+		<h:form id="formLogin">
+			<p:panel id="loginPanel" header="Login" styleClass="customPanel">
+				<h:panelGrid columns="2">
+					<h:outputLabel for="nmUsuario" value="Usuário:" />
+					<p:inputText id="nmUsuario" value="#{login.user}" required="true" label="Usuário">
+						<f:validateLength minimum="4" />
+					</p:inputText>
+	
+					<h:outputLabel for="nmPassword" value="Senha:" />
+					<p:password id="nmPassword" value="#{login.password}" required="true" label="Senha">
+						<f:validateLength minimum="4" />
+					</p:password>
+					<p:commandButton id="btLogin" value="Entrar" icon="ui-icon-locked" actionListener="#{login.checkLogin}" styleClass="customBtLogin"/>
+				</h:panelGrid>
+				<p:growl id="messages" sticky="false" autoUpdate="true"/>
+			</p:panel>
+		</h:form>
+	</div>
 </h:body>
 </html>
