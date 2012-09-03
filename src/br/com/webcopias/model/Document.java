@@ -76,5 +76,4 @@ public class Document {
 	public void setDocumentSize(Double documentSize) {
 		this.documentSize = documentSize;
 	}
-	
 }

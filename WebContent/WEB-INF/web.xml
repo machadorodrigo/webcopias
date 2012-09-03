@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>WebCopias</display-name>
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>login.xhtml</welcome-file>
 		<welcome-file>default.xhtml</welcome-file>
 	</welcome-file-list>
 	
@@ -33,11 +33,6 @@
 	</servlet-mapping>
 
 
-	<!-- Tema bootstrap -->
-	<context-param>
-		<param-name>primefaces.THEME</param-name>
-		<param-value>bootstrap</param-value>
-	</context-param>
 	
 	<!-- Filtros -->
 	<filter>
@@ -48,4 +43,10 @@
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
+	
+	<!-- Tema bootstrap -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
 </web-app>

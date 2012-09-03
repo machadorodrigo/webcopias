@@ -1,0 +1,32 @@
+@CHARSET "ISO-8859-1";
+
+.customPanel .ui-widget-header {
+	font-size: 12px !important;
+}
+
+.customPanel label {
+	font-size: 12px !important;
+}
+
+.customPanel .ui-inputfield {
+	font-size: 12px !important;
+}
+
+.customBtLogin {
+	font-size: 12px !important;
+	margin: 0 !important;
+	float: none!impportant;
+}
+
+.ui-growl-message span,p {
+	font-size: 12px !important;
+}
+
+.customPanel {
+	width:230px;
+	float:none;
+ 	margin-left: auto;
+    margin-right: auto;
+	margin-top: 15%;
+	box-shadow: 3px 3px 3px #888;
+}
