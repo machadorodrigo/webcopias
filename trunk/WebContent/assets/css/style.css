@@ -1,4 +1,7 @@
 @CHARSET "ISO-8859-1";
+.customBody {
+	background: #f2f1f1;
+}
 
 .customPanel .ui-widget-header {
 	font-size: 13px !important;
@@ -24,22 +27,14 @@
 
 .customPanel {
 	width: 285px;
+	margin: 0 auto;
+	margin-top: 18%
 	/*-moz-box-shadow: 3px 3px 3px #888;
 	-webkit-box-shadow: 3px 3px 3px #888;
 	box-shadow: 3px 3px 3px #888;
 	-ms-filter:	"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#888')";*/
 }
 
-.content {
-	width: 290px;
-	margin: 0 auto;
-	margin-top: 15%;
-}
-
-.bodyCustom {
-	background: #f2f1f1;
-}
-
 .ui-messages span{
-	font-size: 10px !important;
+	font-size: 11px !important;
 }
