@@ -5,10 +5,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@ManagedBean(name = "login")
+@ManagedBean(name="login")
 @RequestScoped
 public class Login {
-	private String user,password;
+	private String user, password;
 
 	public String getUser() {
 		return user;
@@ -16,7 +16,6 @@ public class Login {
 
 	public void setUser(String user) {
 		this.user = user;
-		System.out.println("uooooooooooooooooooo");
 	}
 
 	public String getPassword() {
@@ -25,19 +24,19 @@ public class Login {
 
 	public void setPassword(String password) {
 		this.password = password;
-		System.out.println("uaaaaaaaaaaaaaaaaa");
 	}
-	
-	public void checkLogin(){
-		if(user == null){
-			FacesMessage msg = new FacesMessage("Erro. ", "Usuário não informado");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}else if(password == null){
-			FacesMessage msg = new FacesMessage("Erro. ", "Senha não informado");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		}else{
-			FacesMessage msg = new FacesMessage("Erro. ", "Usuário ou senha incorreto");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+
+	public void checkLogin() {
+		if(user.equals("")){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário não informado", ""));
+		}
+		
+		if(password.equals("")){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senha não informada", ""));
+		}
+
+		if(true){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usuário ou senha incorreto", ""));
 		}
 	}
 }
