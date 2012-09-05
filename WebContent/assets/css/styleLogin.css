@@ -1,6 +1,6 @@
 @CHARSET "ISO-8859-1";
 .customBody {
-	background: #f2f1f1;
+	background-image: url("/WebCopias//assets/image/noise.jpg");
 }
 
 .customPanel .ui-widget-header {
@@ -28,11 +28,11 @@
 .customPanel {
 	width: 285px;
 	margin: 0 auto;
-	margin-top: 18%
-	/*-moz-box-shadow: 3px 3px 3px #888;
+	margin-top: 18%;
+	-moz-box-shadow: 3px 3px 3px #888;
 	-webkit-box-shadow: 3px 3px 3px #888;
 	box-shadow: 3px 3px 3px #888;
-	-ms-filter:	"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#888')";*/
+	-ms-filter:	"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#888')";
 }
 
 .ui-messages span{
