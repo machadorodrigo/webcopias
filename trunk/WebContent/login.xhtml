@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>WebCópias</title>
-	<link rel="stylesheet" href="assets/css/style.css" />
+	<link rel="stylesheet" href="assets/css/styleLogin.css" />
 </h:head>
 <h:body styleClass="customBody">
 	<h:form id="formLogin">
@@ -19,7 +19,7 @@
 				<p:password id="nmPassword" value="#{login.password}" label="Senha"></p:password>
 				<p:commandButton id="btLogin" value="Entrar" icon="ui-icon-locked" actionListener="#{login.checkLogin}" styleClass="customBtLogin" />
 			</h:panelGrid>
-			<p:messages id="messages" showDetail="true" autoUpdate="true" />
+			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 		</p:panel>
 	</h:form>
 </h:body>
