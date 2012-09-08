@@ -1,12 +1,11 @@
 package br.com.webcopias.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Table;
-
-@DynamicUpdate
-@Table(appliesTo="GRUPO")
+@Entity
+@Table(name="GRUPO")
 public class Group {
 	private String groupCode,groupName;
 
@@ -34,4 +33,5 @@ public class Group {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
+	
 }

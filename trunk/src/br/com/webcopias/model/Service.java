@@ -1,14 +1,13 @@
 package br.com.webcopias.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Table;
-
-@DynamicUpdate
-@Table(appliesTo="SERVICO")
+@Entity
+@Table(name="SERVICO")
 public class Service {
 	private Integer id;
 	private String serviceName;

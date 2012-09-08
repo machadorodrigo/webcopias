@@ -1,32 +1,36 @@
 package br.com.webcopias.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Table;
 
-@DynamicUpdate
-@Table(appliesTo = "CENTRAL_COPIAS")
+@Entity
+@Table(name="CENTRAL_COPIAS")
 public class CentralCopy {
-	private Integer id,quantityCopy;
-	private User userRegistration;
-	private Document document;
-	private Service serviceType;
-	private String observation;
+
+	private Integer id,quantityCopy,serviceType,discipline;
+	private String userRegistration,document,observation;
 	private Boolean active;
 	
 	public CentralCopy(){};
 	
-	public CentralCopy(Integer id, Integer qualtityCopy, User userRegistration,
-			Service serviceType) {
+	public CentralCopy(Integer id, Integer quantityCopy, Integer serviceType,
+			Integer discipline, String userRegistration, String document,
+			String observation, Boolean active) {
 		super();
 		this.id = id;
-		this.quantityCopy = qualtityCopy;
-		this.userRegistration = userRegistration;
+		this.quantityCopy = quantityCopy;
 		this.serviceType = serviceType;
+		this.discipline = discipline;
+		this.userRegistration = userRegistration;
+		this.document = document;
+		this.observation = observation;
+		this.active = active;
 	}
+
 	
 	@Id
 	@GeneratedValue
@@ -47,19 +51,19 @@ public class CentralCopy {
 		this.quantityCopy = quantityCopy;
 	}
 	
-	public User getUserRegistration() {
+	public String getUserRegistration() {
 		return userRegistration;
 	}
 	
-	public void setUserRegistration(User userRegistration) {
+	public void setUserRegistration(String userRegistration) {
 		this.userRegistration = userRegistration;
 	}
 	
-	public Service getServiceType() {
+	public Integer getServiceType() {
 		return serviceType;
 	}
 	
-	public void setServiceType(Service serviceType) {
+	public void setServiceType(Integer serviceType) {
 		this.serviceType = serviceType;
 	}
 
@@ -71,19 +75,28 @@ public class CentralCopy {
 		this.observation = observation;
 	}
 
-	public Document getDocument() {
+	public String getDocument() {
 		return document;
 	}
 
-	public void setDocument(Document document) {
+	public void setDocument(String document) {
 		this.document = document;
 	}
-
+	
+	@Column(columnDefinition = "BOOLEAN")
 	public Boolean getActive() {
 		return active;
 	}
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Integer getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(Integer discipline) {
+		this.discipline = discipline;
 	}
 }
