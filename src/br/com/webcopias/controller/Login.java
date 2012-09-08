@@ -28,15 +28,15 @@ public class Login {
 
 	public void checkLogin() {
 		if(user.equals("")){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usu√°rio n√£o informado", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usu·rio n„o informado", ""));
 		}
 		
 		if(password.equals("")){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senha n√£o informada", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Senha n„o informada", ""));
 		}
 
 		if(true){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usu√°rio ou senha incorreto", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Usu·rio ou senha incorreto", ""));
 		}
 	}
 }

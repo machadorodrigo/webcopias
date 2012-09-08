@@ -1,23 +1,29 @@
 package br.com.webcopias.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Table;
+import br.com.webcopias.model.Department;
 
-@DynamicUpdate
-@Table(appliesTo="DISCIPLINA")
+@Entity
+@Table(name="DISCIPLINA")
 public class Discipline {
 	private Integer copyLimit;
 	private String disciplineCode,disciplineName;
+	private List<Department> department;
 	
 	public Discipline(){};
 	
-	public Discipline(String disciplineCode, String disciplineName, Integer copyLimit) {
+	public Discipline(String disciplineCode, String disciplineName, Integer copyLimit,List<Department> department) {
 		super();
 		this.disciplineCode = disciplineCode;
 		this.disciplineName = disciplineName;
 		this.copyLimit = copyLimit;
+		this.department = department;
 	}
 	
 	@Column(unique=true)
@@ -38,5 +44,14 @@ public class Discipline {
 	}
 	public void setCopyLimit(Integer copyLimit) {
 		this.copyLimit = copyLimit;
+	}
+	
+	@ManyToMany
+	public List<Department> getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(List<Department> department) {
+		this.department = department;
 	}
 }

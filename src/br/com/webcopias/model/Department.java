@@ -1,12 +1,11 @@
 package br.com.webcopias.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Table;
-
-@DynamicUpdate
-@Table(appliesTo="DEPARTAMENTO")
+@Entity
+@Table(name="DEPARTAMENTO")
 public class Department {
 	private String departamentCode,departmentName;
 	
@@ -33,5 +32,6 @@ public class Department {
 
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
-	} 
+	}
+
 }
