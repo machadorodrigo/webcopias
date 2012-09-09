@@ -9,13 +9,13 @@
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/default.jsf" access="hasRole('ROLE_USER')"/>
-        <form-login login-page="/login.jsf" default-target-url="/default.jsf" authentication-failure-url="/login.jsf?erro=1"/>
+        <form-login login-page="/login.jsf" default-target-url="/default.jsf" authentication-failure-url="/login.jsf?erro=true"/>
     </http>
     
     <authentication-manager>
         <authentication-provider>
             <jdbc-user-service data-source-ref="dataSource" users-by-username-query="SELECT registration, password, active FROM usuario WHERE registration=?"
-               authorities-by-username-query="SELECT USUARIO_registration as user, role_name as role FROM usuarion_papel WHERE USUARIO_registration=?"/>
+               authorities-by-username-query="SELECT USUARIO_registration as registration, role_name as role FROM usuario_papel WHERE USUARIO_registration=?"/>
         </authentication-provider>
     </authentication-manager>
 
@@ -23,7 +23,7 @@
         <b:property name="url" value="jdbc:mysql://localhost:3306/webcopias" />
         <b:property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <b:property name="username" value="root" />
-        <b:property name="password" value="123" />
+        <b:property name="password" value="adm" />
     </b:bean>
 
 </b:beans>
