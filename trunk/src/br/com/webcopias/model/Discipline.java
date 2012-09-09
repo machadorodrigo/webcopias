@@ -4,28 +4,28 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import br.com.webcopias.model.Department;
 
 @Entity
 @Table(name="DISCIPLINA")
 public class Discipline {
 	private Integer copyLimit;
 	private String disciplineCode,disciplineName;
-	private List<Department> department;
+	private List<User> registration;
 	
 	public Discipline(){};
 	
-	public Discipline(String disciplineCode, String disciplineName, Integer copyLimit,List<Department> department) {
+	public Discipline(String disciplineCode, String disciplineName, Integer copyLimit, List<User> registration) {
 		super();
 		this.disciplineCode = disciplineCode;
 		this.disciplineName = disciplineName;
 		this.copyLimit = copyLimit;
-		this.department = department;
+		this.registration = registration;
 	}
 	
+	@Id
 	@Column(unique=true)
 	public String getDisciplineCode() {
 		return disciplineCode;
@@ -47,11 +47,11 @@ public class Discipline {
 	}
 	
 	@ManyToMany
-	public List<Department> getDepartment() {
-		return department;
+	public List<User> getRegistration() {
+		return registration;
 	}
 
-	public void setDepartment(List<Department> department) {
-		this.department = department;
+	public void setRegistration(List<User> registration) {
+		this.registration = registration;
 	}
 }

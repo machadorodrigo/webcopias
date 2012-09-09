@@ -1,26 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html 
-	xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.prime.com.tr/ui">
 <h:head>
 	<title>WebCópias</title>
 	<link rel="stylesheet" href="assets/css/styleLogin.css" />
 </h:head>
 <h:body styleClass="customBody">
-	<h:form id="formLogin">
+	<form action="j_spring_security_check" method="post">
 		<p:panel id="loginPanel" header="Login" styleClass="customPanel">
+			<center>
+                <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
+            </center>
 			<h:panelGrid columns="2">
-				<h:outputLabel for="nmUsuario" value="Usuário:" />
-				<p:inputText id="nmUsuario" value="#{login.user}" label="Usuário"></p:inputText>
-
-				<h:outputLabel for="nmPassword" value="Senha:" />
-				<p:password id="nmPassword" value="#{login.password}" label="Senha"></p:password>
-				<p:commandButton id="btLogin" value="Entrar" icon="ui-icon-locked" actionListener="#{login.checkLogin}" styleClass="customBtLogin" />
+				<h:outputLabel for="j_username" value="Matrícula: "/>
+				<h:inputText id="j_username" required="true" styleClass="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"/>
+				<h:outputLabel for="j_password" value="Senha:" />
+				<h:inputSecret id="j_password" required="true" styleClass="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"/>
+				<h:commandButton id="btLogin" value="Entrar" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left customBtLogin ui-state-hover customBtLogin" />
 			</h:panelGrid>
-			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 		</p:panel>
-	</h:form>
+	</form>
 </h:body>
 </html>
