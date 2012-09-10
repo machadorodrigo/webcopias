@@ -27,40 +27,41 @@ public class HibernateUtil {
 
 	public static SessionFactory getSessionFactory() {
 
-        if (sessionFactory == null) {
-            try {
-            	Configuration configuration = new Configuration();
-            	configuration.configure("/hibernate.cfg.xml");
-            	
-            	serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-            	
-            	configuration.addAnnotatedClass(User.class);
-            	configuration.addAnnotatedClass(Role.class);
-            	configuration.addAnnotatedClass(Group.class);
-            	configuration.addAnnotatedClass(Department.class);
-            	configuration.addAnnotatedClass(Discipline.class);
-            	configuration.addAnnotatedClass(CentralCopy.class);
-            	configuration.addAnnotatedClass(CentralHistory.class);
-            	configuration.addAnnotatedClass(Document.class);
-            	configuration.addAnnotatedClass(Parameter.class);
-            	configuration.addAnnotatedClass(Service.class);
+		if (sessionFactory == null) {
+			try {
+				Configuration configuration = new Configuration();
+				configuration.configure("/hibernate.cfg.xml");
 
-                sessionFactory = configuration.buildSessionFactory(serviceRegistry); 
-                SchemaExport se = new SchemaExport(configuration);
-                se.create(true, true);
+				serviceRegistry = new ServiceRegistryBuilder().applySettings(
+						configuration.getProperties()).buildServiceRegistry();
 
-            } catch (Throwable ex) {
-                throw new ExceptionInInitializerError(ex);
-            }
+				configuration.addAnnotatedClass(User.class);
+				configuration.addAnnotatedClass(Role.class);
+				configuration.addAnnotatedClass(Group.class);
+				configuration.addAnnotatedClass(Department.class);
+				configuration.addAnnotatedClass(Discipline.class);
+				configuration.addAnnotatedClass(CentralCopy.class);
+				configuration.addAnnotatedClass(CentralHistory.class);
+				configuration.addAnnotatedClass(Document.class);
+				configuration.addAnnotatedClass(Parameter.class);
+				configuration.addAnnotatedClass(Service.class);
 
-            return sessionFactory;
+				sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+				// SchemaExport se = new SchemaExport(configuration);
+				// se.create(true, true);
 
-        } else {
-            return sessionFactory;
-        }
-    }
-	
-	public static void main(String[] args) {
-        HibernateUtil.getSessionFactory();
-    }
+			} catch (Throwable ex) {
+				throw new ExceptionInInitializerError(ex);
+			}
+
+			return sessionFactory;
+
+		} else {
+			return sessionFactory;
+		}
+	}
+
+	// public static void main(String[] args) {
+	// HibernateUtil.getSessionFactory();
+	// }
 }
