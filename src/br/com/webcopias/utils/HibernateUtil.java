@@ -47,8 +47,8 @@ public class HibernateUtil {
 				configuration.addAnnotatedClass(Service.class);
 
 				sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-				// SchemaExport se = new SchemaExport(configuration);
-				// se.create(true, true);
+//				SchemaExport se = new SchemaExport(configuration);
+//				se.create(true, true);
 
 			} catch (Throwable ex) {
 				throw new ExceptionInInitializerError(ex);
@@ -60,8 +60,8 @@ public class HibernateUtil {
 			return sessionFactory;
 		}
 	}
-
-	// public static void main(String[] args) {
-	// HibernateUtil.getSessionFactory();
-	// }
+//
+//	public static void main(String[] args) {
+//		HibernateUtil.getSessionFactory();
+//	}
 }
