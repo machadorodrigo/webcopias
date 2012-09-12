@@ -26,7 +26,8 @@
 }
 
 .customPanel {
-	width: 285px;
+	width: 260px;
+	height:130px;
 	margin: 0 auto;
 	margin-top: 18%;
 	-moz-box-shadow: 3px 3px 3px #888;
@@ -37,4 +38,36 @@
 
 .ui-messages span{
 	font-size: 11px !important;
+}
+
+.actionSubmitButton {
+	float:right;
+	border: 1px solid #D8D8D8 !important;
+	font-size: 12px !important;
+	width:60px !important;
+	height:25px !important;
+	background: #F2F2F2 !important;
+	background: -webkit-linear-gradient(top, #F5F5F5, #F1F1F1) !important;
+	background: -moz-linear-gradient(top, #F5F5F5, #F1F1F1) !important;
+	background: -ms-linear-gradient(top, #F5F5F5, #F1F1F1) !important;
+	background: -o-linear-gradient(top, #F5F5F5, #F1F1F1) !important;
+	-webkit-transition: border .20s !important;
+	-moz-transition: border .20s !important;
+	-o-transition: border .20s !important;
+	transition: border .20s !important;
+	cursor: pointer;
+}
+
+.actionSubmitButton:hover {
+	float:right;
+	border: 1px solid #C6C6C6 !important;
+	font-size: 12px !important;
+	background: #F3F3F3 !important;
+	background: -webkit-linear-gradient(top, #F8F8F8, #F1F1F1) !important;
+	background: -moz-linear-gradient(top, #F8F8F8, #F1F1F1) !important;
+	background: -ms-linear-gradient(top, #F8F8F8, #F1F1F1) !important;
+	background: -o-linear-gradient(top, #F8F8F8, #F1F1F1) !important;
+	width:60px !important;
+	height:25px !important;
+	cursor: pointer;
 }
