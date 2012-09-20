@@ -18,6 +18,7 @@ public class LoginController {
 	private User registration;
 	
 	public LoginController(){
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Usuário não foi informado."));
 		UserImpl userimpl = new UserImpl();
 		registration = new User();
 		SecurityContext context = SecurityContextHolder.getContext();
@@ -25,14 +26,6 @@ public class LoginController {
 			Authentication authentication = context.getAuthentication();
 			if(authentication instanceof Authentication){
 				
-				if(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername() == null){
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Usuário não foi informado."));
-				}
-				if(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getPassword() == null){
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Senha não foi informada."));
-				}
-				
-				System.out.println(">>>>>" + ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).toString());
 				registration.setRegistration(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername());
 				User usr = userimpl.getUser(registration.getRegistration());
 				registration.setName(usr.getName());
