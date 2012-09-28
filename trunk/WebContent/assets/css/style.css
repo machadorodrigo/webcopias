@@ -1,14 +1,10 @@
 body{
 	margin:0;
 }
-.container #j_idt8-resizer{
-	height: 0 !important;
-	border: 0 !important;
-}
+
 .menu{
 	margin-top: 0 !important;
 	background-color:#f5f5f5;
-	border-radius: 0 !important;
 }
 
 .menu .ui-layout-unit-content{
@@ -20,6 +16,8 @@ body{
 	border-radius:0 !important;
 	border: 0 !important;
 	border-bottom:1px solid #dddddd !important;
+	display: table-cell !important;
+	vertical-align: middle !important;
 }
 
 .header .ui-layout-unit-content{
@@ -41,5 +39,30 @@ body{
 .customUserMenu{
 	float: right;
 	margin-right: 15px;
-	margin-top: 2%;
+	vertical-align: middle !important;
+}
+
+.ui-layout-unit-header{
+	max-height: 15px !important;
+	border: none !important;
+	font-size: 11px !important;
+}
+
+.menuList{
+	border-radius:0 !important;
+	margin-left: -1px !important;
+	width: 199px !important;
+	border-right: none !important;
+	border-left: none !important;
+}
+
+.menuList .ui-widget-header{
+	height: 0 !important;
+	border: none !important;
+	background-color: #f2f2f2 !important;
+}
+
+#j_idt7-resizer{
+	height: 0px !important;
+	border: none !important;
 }
