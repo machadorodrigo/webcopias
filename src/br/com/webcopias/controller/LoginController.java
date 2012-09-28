@@ -1,9 +1,7 @@
 package br.com.webcopias.controller;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -18,7 +16,6 @@ public class LoginController {
 	private User registration;
 	
 	public LoginController(){
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro", "Usuário não foi informado."));
 		UserImpl userimpl = new UserImpl();
 		registration = new User();
 		SecurityContext context = SecurityContextHolder.getContext();
