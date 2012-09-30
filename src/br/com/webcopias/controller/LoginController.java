@@ -25,7 +25,6 @@ public class LoginController {
 		if(context instanceof SecurityContext){
 			Authentication authentication = context.getAuthentication();
 			if(authentication instanceof Authentication){
-				
 				registration.setRegistration(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername());
 				User usr = userimpl.getUser(registration.getRegistration());
 				registration.setName(usr.getName());

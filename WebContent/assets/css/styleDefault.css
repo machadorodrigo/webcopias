@@ -36,9 +36,10 @@ body{
 }
 
 .customUserMenu{
-	float: right;
-	margin-right: 15px;
-	vertical-align: middle !important;
+	position: absolute !important;
+	right: 10px !important;
+	top:50% !important;
+	margin-top: -15px !important;
 }
 
 .ui-layout-unit-header{
