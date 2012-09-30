@@ -7,43 +7,44 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>WebCópias</title>
-	<link rel="stylesheet" href="assets/css/style.css" />
+	<link rel="stylesheet" href="assets/css/styleDefault.css" />
+	<link rel="shortcut icon" href="assets/image/favicon.ico"/>
 </h:head>
-<h:body>
+<body>
+	<p:growl id="resultMessage" showDetail="true" life="4000" />
 	<p:layout fullPage="true" styleClass="container">
 		<p:layoutUnit position="north" size="95" resizable="false" closable="false" collapsible="false" styleClass="header">
-			<div>
-				<div>
-					<h:form>
-						<p:menuButton value="#{login.registration.name}" styleClass="customUserMenu">
-							<p:menuitem value="Editar conta" icon="ui-icon-wrench" />
-							<p:separator />
-							<p:menuitem value="Sair" icon="ui-icon-arrowreturnthick-1-n" url="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout" />
-						</p:menuButton>
-					</h:form>
-				</div>
-			</div>
+			<ui:include src="/form/header.xhtml"></ui:include>
 		</p:layoutUnit>
 		<p:layoutUnit position="west" size="200" header="Navegação" collapsible="true" styleClass="menu" style="padding:0 !important;">
-			<h:form>
-				<p:menu styleClass="menuList">  
-			        <p:submenu styleClass="">  
-			            <p:menuitem value="Usuários" icon="ui-icon-person" rendered="#{user.isAdmin}"/>
-			            <p:menuitem value="Grupo" icon="ui-icon-home" rendered="#{user.isAdmin}"/>
-			            <p:menuitem value="Departamento" icon="ui-icon-contact" rendered="#{user.isAdmin}"/>
-			            <p:menuitem value="Disciplina" icon="ui-icon-note" rendered="#{user.isAdmin || user.isBoss}"/>
-			            <p:menuitem value="Serviço" icon="ui-icon-suitcase" rendered="#{user.isOperator}"/>  
-			            <p:menuitem value="Parâmetros" icon="ui-icon-pencil" rendered="#{user.isAdmin}"/>  
-			            <p:menuitem value="Central de Tarefas" icon="ui-icon-note" rendered="#{user.isOperator}"/>
-			            <p:menuitem value="Nova Impressão" icon="ui-icon-print" rendered="#{user.isTeacher}"/>
-			        </p:submenu>  
-			    </p:menu>
-		    </h:form> 
+			<ui:include src="/form/menu.xhtml"></ui:include> 
 		</p:layoutUnit>
 		<p:layoutUnit position="center" styleClass="content">
 			<h:form>
 			</h:form>
 		</p:layoutUnit>
 	</p:layout>
-</h:body>
+       <p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="fade" width="500">
+           <h:form prependId="false">
+               <h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
+       	            <h:outputLabel for="updateRegistration" value="Matrícula:" />  
+		            <p:inputText value="#{user.registration}" id="updateRegistration" disabled="true" required="true"/>  
+	
+		            <h:outputLabel for="updateName" value="Nome:" />
+		            <p:inputText value="#{user.name}" id="updateName" required="true" />
+
+		            <h:outputLabel for="updatePassword" value="Senha:" />
+		            <h:inputSecret value="#{user.userPassword}" id="updatePassword" required="true" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover"/>
+		            
+		            <h:outputLabel for="updateEmail" value="E-mail:" />
+		            <p:inputText value="#{user.email}" id="updateEmail" required="false" />
+		            
+		            <h:outputLabel for="updatePhoto" value="Foto:" />
+		            <p:inputText value="#{user.photo}" id="updatePhoto" required="false" />
+		            
+		            <p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar"/>
+               </h:panelGrid>
+           </h:form>
+       </p:dialog>
+</body>
 </html>
