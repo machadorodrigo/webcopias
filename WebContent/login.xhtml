@@ -9,6 +9,9 @@
 </h:head>
 <h:body styleClass="customBody">
 	<form action="j_spring_security_check" method="post">
+		<p:confirmDialog id="confirmDialog" message="Erro" header="Usuário ou senha incorretos." widgetVar="confirmation" severity="alert" rendered="#{param.erro}">  
+	        <p:commandButton id="confirm" value="OK"/>  
+	    </p:confirmDialog> 
 		<p:panel id="loginPanel" header="Login" styleClass="customPanel">
 			<h:panelGrid columns="2">
 				<h:outputLabel for="j_username" value="Matrícula: "/>
@@ -16,10 +19,8 @@
 				<h:outputLabel for="j_password" value="Senha:" />
 				<h:inputSecret id="j_password" required="true" styleClass="ui-inputfield ui-password ui-widget ui-state-default ui-corner-all"/>
 			</h:panelGrid>
-			<h:commandButton id="btLogin" value="Entrar" styleClass="actionSubmitButton" />
+			<h:commandButton id="btLogin" value="Entrar" styleClass="actionSubmitButton"/>
 		</p:panel>
-		<br/>
-		<h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" styleClass="login-fail"/>
 	</form>
 </h:body>
 </html>

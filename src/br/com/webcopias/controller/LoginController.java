@@ -17,8 +17,11 @@ public class LoginController {
 	
 	public LoginController(){
 		UserImpl userimpl = new UserImpl();
+		
 		registration = new User();
+		
 		SecurityContext context = SecurityContextHolder.getContext();
+		
 		if(context instanceof SecurityContext){
 			Authentication authentication = context.getAuthentication();
 			if(authentication instanceof Authentication){

@@ -11,7 +11,6 @@ import br.com.webcopias.model.CentralHistory;
 import br.com.webcopias.model.Department;
 import br.com.webcopias.model.Discipline;
 import br.com.webcopias.model.Document;
-import br.com.webcopias.model.Group;
 import br.com.webcopias.model.Parameter;
 import br.com.webcopias.model.Role;
 import br.com.webcopias.model.Service;
@@ -37,7 +36,6 @@ public class HibernateUtil {
 
 				configuration.addAnnotatedClass(User.class);
 				configuration.addAnnotatedClass(Role.class);
-				configuration.addAnnotatedClass(Group.class);
 				configuration.addAnnotatedClass(Department.class);
 				configuration.addAnnotatedClass(Discipline.class);
 				configuration.addAnnotatedClass(CentralCopy.class);
