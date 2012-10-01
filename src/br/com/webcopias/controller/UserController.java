@@ -23,26 +23,27 @@ import br.com.webcopias.model.User;
 @SessionScoped
 public class UserController {
 
-	private String registration,name,email,userPassword,photo;
+	private String registration,name,email,userPassword,photo, currentUser;
 	private Date registrationDate;
 	private Boolean active,isAdmin,isBoss,isTeacher,isOperator;
 	private Integer copyLimit;
 	private List<Role> role;
 	private Collection<GrantedAuthority> roleList;
-	private User user;
-	
+	private UserImpl userimpl;
+	private Authentication authentication;
+	private SecurityContext context;
+
 	public UserController(){
-		SecurityContext context = SecurityContextHolder.getContext();
+		context = SecurityContextHolder.getContext();
 		if(context instanceof SecurityContext){
-			Authentication authentication = context.getAuthentication();
+			authentication = context.getAuthentication();
 			if(authentication instanceof Authentication){
 				Collection<GrantedAuthority> role = authentication.getAuthorities();
-				
 				this.roleList = role;
 			}
 		}
 	}
-	
+
 	public String getRegistration() {
 		return registration;
 	}
@@ -122,64 +123,52 @@ public class UserController {
 	public void setRoleList(Collection<GrantedAuthority> roleList) {
 		this.roleList = roleList;
 	}
-	
+
 	public Boolean getIsAdmin(){
 		for(GrantedAuthority auth : this.getRoleList()){
 			if(auth.equals("ROLE_ADM")) return true;
 		}
 		return false;
 	}
-	
+
 	public Boolean getIsBoss(){
 		for(GrantedAuthority auth : this.getRoleList()){
 			if(auth.equals("ROLE_BOSS")) return true;
 		}
 		return false;
 	}
-	
+
 	public Boolean getIsTeacher(){
 		for(GrantedAuthority auth : this.getRoleList()){
 			if(auth.equals("ROLE_TEACHER")) return true;
 		}
 		return false;
 	}
-	
+
 	public Boolean getIsOperator(){
 		for(GrantedAuthority auth : this.getRoleList()){
 			if(auth.equals("ROLE_OPERATOR")) return true;
 		}
 		return false;
 	}
-	
+
 	public void selfShowUser(ActionEvent actionEvent){
-		String currentUser = null;
-		SecurityContext context = SecurityContextHolder.getContext();
-		
-		if(context instanceof SecurityContext){
-			Authentication authentication = context.getAuthentication();
-			if(authentication instanceof Authentication){
-				currentUser = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-				
-				UserImpl userimpl = new UserImpl();
-				
-				user = userimpl.getUser(currentUser);
-				System.out.println(">>>>>>>>>>>>>>>>>>>>>> " + currentUser);
-				
-				this.setRegistration(user.getRegistration());
-				this.setName(user.getName());
-				this.setUserPassword(user.getPassword());
-				this.setEmail(user.getEmail());
-				this.setActive(user.getActive());
-				this.setCopyLimit(user.getCopyLimit());
-				this.setPhoto(user.getPhoto());
-				this.setRegistrationDate(user.getRegistrationDate());
-				this.setRole(user.getRole());
-			}
-		}
+		//Inicializa setters
+		currentUser = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+		User user = userimpl.getUser(currentUser);
+		this.setRegistration(user.getRegistration());
+		this.setName(user.getName());
+		this.setUserPassword(user.getPassword());
+		this.setEmail(user.getEmail());
+		this.setActive(user.getActive());
+		this.setCopyLimit(user.getCopyLimit());
+		this.setPhoto(user.getPhoto());
+		this.setRegistrationDate(user.getRegistrationDate());
+		this.setRole(user.getRole());
 	}
-	
+
 	public void selfUpdateUser(ActionEvent actionEvent){
-		user = new User();
+		User user = new User();
 		FacesMessage msg = null;
 
 		if(this.name.equals(null)){
@@ -196,7 +185,7 @@ public class UserController {
 			user.setEmail(this.getEmail());
 			user.setRegistrationDate(this.getRegistrationDate());
 			user.setRole(this.getRole());
-			
+
 			UserImpl userImpl = new UserImpl();
 			userImpl.update(user);
 

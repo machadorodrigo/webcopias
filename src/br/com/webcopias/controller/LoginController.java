@@ -13,31 +13,28 @@ import br.com.webcopias.model.User;
 @ManagedBean(name="login")
 @SessionScoped
 public class LoginController {
-	private User registration;
+	private User loggedUser;
+	private UserImpl userimpl;
 	
 	public LoginController(){
-		UserImpl userimpl = new UserImpl();
-		
-		registration = new User();
+		userimpl = new UserImpl();
 		
 		SecurityContext context = SecurityContextHolder.getContext();
 		
 		if(context instanceof SecurityContext){
 			Authentication authentication = context.getAuthentication();
 			if(authentication instanceof Authentication){
-				registration.setRegistration(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername());
-				User usr = userimpl.getUser(registration.getRegistration());
-				registration.setName(usr.getName());
+				User user = userimpl.getUser(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername());
+				this.setLoggedUser(user);
 			}
 		}
 	}
 
-	public User getRegistration() {
-		return registration;
+	public User getLoggedUser() {
+		return loggedUser;
 	}
 
-	public void setRegistration(User registration) {
-		this.registration = registration;
+	public void setLoggedUser(User loggedUser) {
+		this.loggedUser = loggedUser;
 	}
-	
 }
