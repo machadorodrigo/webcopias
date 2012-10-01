@@ -28,19 +28,19 @@
            <h:form prependId="false">
                <h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
        	            <h:outputLabel for="updateRegistration" value="Matrícula:" />  
-		            <p:inputText value="#{user.registration}" id="updateRegistration" disabled="true" required="true"/>  
+		            <p:inputText value="#{user.loggedUser.registration}" id="updateRegistration" disabled="true" required="true"/>  
 	
 		            <h:outputLabel for="updateName" value="Nome:" />
-		            <p:inputText value="#{user.name}" id="updateName" required="true" />
+		            <p:inputText value="#{user.loggedUser.name}" id="updateName" required="true" />
 
 		            <h:outputLabel for="updatePassword" value="Senha:" />
-		            <h:inputSecret value="#{user.userPassword}" id="updatePassword" required="true" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover"/>
+		            <h:inputSecret value="#{user.loggedUser.password}" id="updatePassword" required="true" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover"/>
 		            
 		            <h:outputLabel for="updateEmail" value="E-mail:" />
-		            <p:inputText value="#{user.email}" id="updateEmail" required="false" />
+		            <p:inputText value="#{user.loggedUser.email}" id="updateEmail" required="false" />
 		            
 		            <h:outputLabel for="updatePhoto" value="Foto:" />
-		            <p:inputText value="#{user.photo}" id="updatePhoto" required="false" />
+		            <p:inputText value="#{user.loggedUser.photo}" id="updatePhoto" required="false" />
 		            
 		            <p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar"/>
                </h:panelGrid>

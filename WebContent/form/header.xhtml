@@ -11,7 +11,7 @@
 			<h:form>
 				<p:menuButton value="#{login.loggedUser.name}"
 					styleClass="customUserMenu">
-					<p:menuitem value="Editar conta" icon="ui-icon-wrench" actionListener="#{user.selfShowUser}" oncomplete="updateAccount.show()"/>
+					<p:menuitem value="Editar conta" icon="ui-icon-wrench" oncomplete="updateAccount.show()"/>
 					<p:separator />
 					<p:menuitem value="Sair" icon="ui-icon-arrowreturnthick-1-n"
 						url="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout" />

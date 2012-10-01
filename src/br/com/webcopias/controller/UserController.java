@@ -23,98 +23,28 @@ import br.com.webcopias.model.User;
 @SessionScoped
 public class UserController {
 
-	private String registration,name,email,userPassword,photo, currentUser;
-	private Date registrationDate;
-	private Boolean active,isAdmin,isBoss,isTeacher,isOperator;
-	private Integer copyLimit;
-	private List<Role> role;
+	private String currentUser;
+	private Boolean isAdmin,isBoss,isTeacher,isOperator;
 	private Collection<GrantedAuthority> roleList;
-	private UserImpl userimpl;
-	private Authentication authentication;
-	private SecurityContext context;
+	private User loggedUser;
 
 	public UserController(){
-		context = SecurityContextHolder.getContext();
+		SecurityContext context = SecurityContextHolder.getContext();
 		if(context instanceof SecurityContext){
-			authentication = context.getAuthentication();
+			Authentication authentication = context.getAuthentication();
 			if(authentication instanceof Authentication){
 				Collection<GrantedAuthority> role = authentication.getAuthorities();
 				this.roleList = role;
+				
+				//Inicializa setters
+				currentUser = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+				UserImpl userImpl = new UserImpl();
+				User user = userImpl.getUser(currentUser);
+				this.setLoggedUser(user);
 			}
 		}
 	}
 
-	public String getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(String registration) {
-		this.registration = registration;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
-	public String getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
-
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public Integer getCopyLimit() {
-		return copyLimit;
-	}
-
-	public void setCopyLimit(Integer copyLimit) {
-		this.copyLimit = copyLimit;
-	}
-
-	public List<Role> getRole() {
-		return role;
-	}
-
-	public void setRole(List<Role> role) {
-		this.role = role;
-	}
 
 	public Collection<GrantedAuthority> getRoleList() {
 		return roleList;
@@ -152,47 +82,31 @@ public class UserController {
 		return false;
 	}
 
-	public void selfShowUser(ActionEvent actionEvent){
-		//Inicializa setters
-		currentUser = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-		User user = userimpl.getUser(currentUser);
-		this.setRegistration(user.getRegistration());
-		this.setName(user.getName());
-		this.setUserPassword(user.getPassword());
-		this.setEmail(user.getEmail());
-		this.setActive(user.getActive());
-		this.setCopyLimit(user.getCopyLimit());
-		this.setPhoto(user.getPhoto());
-		this.setRegistrationDate(user.getRegistrationDate());
-		this.setRole(user.getRole());
-	}
-
 	public void selfUpdateUser(ActionEvent actionEvent){
-		User user = new User();
 		FacesMessage msg = null;
-
-		if(this.name.equals(null)){
+		
+		if(this.getLoggedUser().getName() == null){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "O nome não foi informado.");
-		}else if(this.userPassword.equals(null)){
+		}else if(this.getLoggedUser().getPassword() == null){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "A senha não foi informada.");
-		}else if(!this.registration.equals(null)){
-			user.setRegistration(this.getRegistration());
-			user.setName(this.getName());
-			user.setActive(this.getActive());
-			user.setPhoto(this.getPhoto());
-			user.setPassword(this.getUserPassword());
-			user.setCopyLimit(this.getCopyLimit());
-			user.setEmail(this.getEmail());
-			user.setRegistrationDate(this.getRegistrationDate());
-			user.setRole(this.getRole());
-
+		}else if(!(this.getLoggedUser().getRegistration() == null)){
+			User user = this.getLoggedUser();
+			
 			UserImpl userImpl = new UserImpl();
 			userImpl.update(user);
 
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seus dados foram atualizados.");
-		}else if(this.registration.equals(null)){
+		}else if(this.getLoggedUser().getRegistration() == null){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um problema ao buscar suas informações.");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
+	}
+
+	public User getLoggedUser() {
+		return loggedUser;
+	}
+
+	public void setLoggedUser(User loggedUser) {
+		this.loggedUser = loggedUser;
 	}
 }
