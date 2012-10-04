@@ -10,6 +10,8 @@ import javax.persistence.Table;
 public class Role {
 	private String name,description;
 	
+	public Role(){}
+	
 	public Role(String name,String description) {
 		super();
 		this.name = name;

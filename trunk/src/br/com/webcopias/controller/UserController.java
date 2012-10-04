@@ -1,8 +1,6 @@
 package br.com.webcopias.controller;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,7 +14,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.webcopias.dao.UserImpl;
-import br.com.webcopias.model.Role;
 import br.com.webcopias.model.User;
 
 @ManagedBean(name="user")
@@ -45,6 +42,13 @@ public class UserController {
 		}
 	}
 
+	public User getLoggedUser() {
+		return loggedUser;
+	}
+
+	public void setLoggedUser(User loggedUser) {
+		this.loggedUser = loggedUser;
+	}
 
 	public Collection<GrantedAuthority> getRoleList() {
 		return roleList;
@@ -84,29 +88,21 @@ public class UserController {
 
 	public void selfUpdateUser(ActionEvent actionEvent){
 		FacesMessage msg = null;
-		
-		if(this.getLoggedUser().getName() == null){
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "O nome n„o foi informado.");
-		}else if(this.getLoggedUser().getPassword() == null){
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "A senha n„o foi informada.");
-		}else if(!(this.getLoggedUser().getRegistration() == null)){
+
+		if(this.getLoggedUser().getName() == null || this.getLoggedUser().getName().equalsIgnoreCase("")){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "O nome n√£o foi informado.");
+		}else if(this.getLoggedUser().getPassword() == null || this.getLoggedUser().getPassword().equalsIgnoreCase("")){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "A senha n√£o foi informada.");
+		}else if(this.getLoggedUser().getRegistration() == null || this.getLoggedUser().getRegistration().equalsIgnoreCase("")){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um problema ao buscar suas informa√ß√µes.");
+		}else{
 			User user = this.getLoggedUser();
 			
 			UserImpl userImpl = new UserImpl();
 			userImpl.update(user);
 
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seus dados foram atualizados.");
-		}else if(this.getLoggedUser().getRegistration() == null){
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um problema ao buscar suas informaÁıes.");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
-	}
-
-	public User getLoggedUser() {
-		return loggedUser;
-	}
-
-	public void setLoggedUser(User loggedUser) {
-		this.loggedUser = loggedUser;
 	}
 }

@@ -24,17 +24,17 @@
 			</h:form>
 		</p:layoutUnit>
 	</p:layout>
-       <p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="fade" width="500">
+       <p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="slide" width="500">
            <h:form prependId="false">
                <h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
        	            <h:outputLabel for="updateRegistration" value="Matrícula:" />  
-		            <p:inputText value="#{user.loggedUser.registration}" id="updateRegistration" disabled="true" required="true"/>  
+		            <p:inputText value="#{user.loggedUser.registration}" id="updateRegistration" disabled="true"/>  
 	
 		            <h:outputLabel for="updateName" value="Nome:" />
-		            <p:inputText value="#{user.loggedUser.name}" id="updateName" required="true" />
+		            <p:inputText value="#{user.loggedUser.name}" id="updateName" />
 
 		            <h:outputLabel for="updatePassword" value="Senha:" />
-		            <h:inputSecret value="#{user.loggedUser.password}" id="updatePassword" required="true" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover"/>
+		            <h:inputSecret value="#{user.loggedUser.password}" id="updatePassword" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover"/>
 		            
 		            <h:outputLabel for="updateEmail" value="E-mail:" />
 		            <p:inputText value="#{user.loggedUser.email}" id="updateEmail" required="false" />

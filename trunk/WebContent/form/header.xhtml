@@ -9,7 +9,7 @@
 	<div>
 		<div>
 			<h:form>
-				<p:menuButton value="#{login.loggedUser.name}"
+				<p:menuButton id="userMenu" value="#{login.loggedUser.name}"
 					styleClass="customUserMenu">
 					<p:menuitem value="Editar conta" icon="ui-icon-wrench" oncomplete="updateAccount.show()"/>
 					<p:separator />

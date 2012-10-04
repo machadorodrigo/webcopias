@@ -66,3 +66,11 @@ body{
 	background-color: #f2f2f2 !important;
 	border-bottom: 1px solid #dddddd !important;
 }
+
+.ui-growl span{
+	font-size: 11px !important;
+}
+
+.ui-growl p{
+	font-size: 11px !important;
+}

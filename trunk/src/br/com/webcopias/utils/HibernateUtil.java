@@ -4,7 +4,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import br.com.webcopias.model.CentralCopy;
 import br.com.webcopias.model.CentralHistory;
@@ -58,7 +57,7 @@ public class HibernateUtil {
 			return sessionFactory;
 		}
 	}
-//
+
 //	public static void main(String[] args) {
 //		HibernateUtil.getSessionFactory();
 //	}
