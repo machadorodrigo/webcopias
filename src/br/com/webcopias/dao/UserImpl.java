@@ -1,6 +1,5 @@
 package br.com.webcopias.dao;
 
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
