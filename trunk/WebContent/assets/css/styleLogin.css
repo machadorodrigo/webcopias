@@ -1,7 +1,7 @@
 @CHARSET "ISO-8859-1";
 .customBody {
 	background-color: #f5f5f5;
-	/* background-image: url("/WebCopias//assets/image/noise.jpg"); */
+	background-image: url("/WebCopias//assets/image/noise.jpg");
 }
 
 .customPanel .ui-widget-header {
@@ -31,6 +31,9 @@
 	height:10%;
 	margin: 0 auto;
 	margin-top: 18%;
+	-webkit-box-shadow: 0px 0px 8px rgba(50, 50, 50, 0.56);
+	-moz-box-shadow:    0px 0px 8px rgba(50, 50, 50, 0.56);
+	box-shadow:         0px 0px 8px rgba(50, 50, 50, 0.56);
 }
 
 .ui-messages span{
