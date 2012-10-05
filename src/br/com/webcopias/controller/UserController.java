@@ -21,6 +21,7 @@ import br.com.webcopias.model.User;
 public class UserController {
 
 	private String currentUser;
+	@SuppressWarnings("unused")
 	private Boolean isAdmin,isBoss,isTeacher,isOperator;
 	private Collection<GrantedAuthority> roleList;
 	private User loggedUser;
@@ -100,7 +101,7 @@ public class UserController {
 			
 			UserImpl userImpl = new UserImpl();
 			userImpl.update(user);
-
+			
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seus dados foram atualizados.");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
