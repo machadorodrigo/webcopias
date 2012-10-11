@@ -14,6 +14,13 @@ public class CreateUser {
 	public CreateUser(String registration, String name, String email, String password, String copyLimit, String role){
 		user = new User();
 		
+		System.out.println("Matrícula: " + registration);
+		System.out.println("Nome: " + name);
+		System.out.println("E-mail: " + email);
+		System.out.println("Senha: " + password);
+		System.out.println("Limite de Cópias: " + copyLimit);
+		System.out.println("Papel: " + role);
+		
 		this.user.setRegistration(registration);
 		this.user.setName(name);
 		this.user.setEmail(email);
@@ -21,7 +28,16 @@ public class CreateUser {
 		this.user.setRegistrationDate(new Date());
 		this.user.setActive(true);
 		this.user.setPhoto(null);
-		this.user.setCopyLimit((copyLimit.equals("") || copyLimit == null)?0:Integer.parseInt(copyLimit));
+		if(copyLimit.equals("") || copyLimit == null){
+			this.user.setCopyLimit(0);
+		}else{
+			try {
+				this.user.setCopyLimit(Integer.parseInt(copyLimit));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				this.user.setCopyLimit(0);
+			}
+		}
 		this.user.setRole((role==null)?null:getRolesList(role));
 	}
 	
