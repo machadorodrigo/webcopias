@@ -63,8 +63,9 @@ body{
 }
 
 #j_idt7-resizer{
-	background-color: #f2f2f2 !important;
+	background-color: silver !important;
 	border-bottom: 1px solid #dddddd !important;
+	height: 0px !important;
 }
 
 .ui-growl span{

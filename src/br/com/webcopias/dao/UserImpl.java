@@ -1,5 +1,7 @@
 package br.com.webcopias.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -24,4 +26,19 @@ public class UserImpl extends GenericHibernate<User> implements UserDao{
 		return user;
     }
 
+	@SuppressWarnings("unchecked")
+	public List<User> getUsersList() {
+		List<User> users = null;
+		Session session = null;
+		try{
+			session = HibernateUtil.getSessionFactory().openSession();
+			users = session.createQuery("from User").list();
+			session.flush();
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+        return users;
+    }
 }

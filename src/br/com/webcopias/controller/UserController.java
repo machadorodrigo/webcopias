@@ -1,12 +1,15 @@
 package br.com.webcopias.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +17,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.webcopias.dao.UserImpl;
+import br.com.webcopias.model.Role;
 import br.com.webcopias.model.User;
 
 @ManagedBean(name="user")
@@ -22,9 +26,11 @@ public class UserController {
 
 	private String currentUser;
 	@SuppressWarnings("unused")
-	private Boolean isAdmin,isBoss,isTeacher,isOperator;
+	private Boolean isAdmin,isBoss,isTeacher,isOperator,isSelectedAdmin,isSelectedBoss,isSelectedTeacher,isSelectedOperator;
 	private Collection<GrantedAuthority> roleList;
 	private User loggedUser;
+	private DataModel<User> listUsers;
+	private User selectedUser;
 
 	public UserController(){
 		SecurityContext context = SecurityContextHolder.getContext();
@@ -43,6 +49,14 @@ public class UserController {
 		}
 	}
 
+	public User getSelectedUser() {
+		return selectedUser;
+	}
+
+	public void setSelectedUser(User selectedUser) {
+		this.selectedUser = selectedUser;
+	}
+	
 	public User getLoggedUser() {
 		return loggedUser;
 	}
@@ -105,5 +119,77 @@ public class UserController {
 			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seus dados foram atualizados.");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
+	}
+	
+	public DataModel<User> getListUsers(){
+		
+		UserImpl userImpl = new UserImpl();
+		List<User> users = userImpl.getUsersList();
+		DataModel<User> model = new ListDataModel<User>(users);
+		
+		return model;
+	}
+
+	public void deleteUser(ActionEvent acEvent){
+		UserImpl userImpl = new UserImpl();
+		FacesMessage msg = null;
+		
+		try{
+			userImpl.remove(this.getSelectedUser());
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "O usuário foi removido.");
+		}catch(RuntimeException e){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um erro ao tentar remover o usuário.");
+			e.printStackTrace();
+		}
+		
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public Boolean getIsSelectedAdmin() {
+		User user = this.getSelectedUser();
+
+		if(user != null){
+			for(Role role : user.getRole()){
+				if(role.getName().equalsIgnoreCase("ROLE_ADM")) return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public Boolean getIsSelectedBoss() {
+		User user = this.getSelectedUser();
+		
+		if(user != null){
+			for(Role role : user.getRole()){
+				if(role.getName().equalsIgnoreCase("ROLE_BOSS")) return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public Boolean getIsSelectedTeacher() {
+		User user = this.getSelectedUser();
+		
+		if(user != null){
+			for(Role role : user.getRole()){
+				if(role.getName().equalsIgnoreCase("ROLE_TEACHER")) return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public Boolean getIsSelectedOperator() {
+		User user = this.getSelectedUser();
+		
+		if(user != null){
+			for(Role role : user.getRole()){
+				if(role.getName().equalsIgnoreCase("ROLE_OPERATOR")) return true;
+			}
+		}
+		
+		return false;
 	}
 }

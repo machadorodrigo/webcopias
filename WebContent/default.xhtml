@@ -45,7 +45,6 @@
 				<p:inputText value="#{user.loggedUser.photo}" id="updatePhoto" required="false" />
 
 				<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar" >
-					<f:ajax event="click" execute="updateName" render="userMenu" update="userMenu"/>
 				</p:commandButton>
 			</h:panelGrid>
 		</h:form>
