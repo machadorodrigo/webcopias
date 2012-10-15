@@ -74,3 +74,11 @@ body{
 .ui-growl p{
 	font-size: 11px !important;
 }
+
+.column-datatable{
+	font-size: 11px !important;
+}
+
+.value-datatable{
+	font-size: 11px !important;
+}
