@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -135,8 +136,12 @@ public class UserController {
 		FacesMessage msg = null;
 		
 		try{
-			userImpl.remove(this.getSelectedUser());
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "O usuário foi removido.");
+			if(this.getSelectedUser().getRegistration().equals(this.getLoggedUser().getRegistration())){
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Não é possível remover seu próprio usuário.");
+			}else{
+				userImpl.remove(this.getSelectedUser());
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "O usuário foi removido.");
+			}
 		}catch(RuntimeException e){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um erro ao tentar remover o usuário.");
 			e.printStackTrace();
