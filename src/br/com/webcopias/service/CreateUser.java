@@ -2,6 +2,7 @@ package br.com.webcopias.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import br.com.webcopias.dao.RoleImpl;
 import br.com.webcopias.dao.UserImpl;
@@ -73,7 +74,7 @@ public class CreateUser {
 	 * @param role Papéis separados por vírgula
 	 * @return List Retorna uma lista de Role
 	 */
-	public List<Role> getRolesList(String role){
+	public Set<Role> getRolesList(String role){
 		String[] roleSplit = role.split(",");
 		RoleImpl roleImpl = new RoleImpl();
 		String roleSrt = "";

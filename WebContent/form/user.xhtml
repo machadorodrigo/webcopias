@@ -8,17 +8,25 @@
 	<link rel="stylesheet" href="../assets/css/styleUser.css" />
 </h:head>
 <body>
+
 	<p:growl id="resultMessage" showDetail="true" life="4000" />
+	
+	
 	<p:layout fullPage="true" styleClass="container">
 		<p:layoutUnit position="north" size="95" resizable="false" closable="false"	collapsible="false" styleClass="header">
 			<ui:include src="/form/header.xhtml"></ui:include>
 		</p:layoutUnit>
+		
 		<p:layoutUnit position="west" size="200" header="Navegação" collapsible="true"	styleClass="menu" style="padding:0 !important;">
 			<ui:include src="/form/menu.xhtml"></ui:include>
 		</p:layoutUnit>
-		<p:layoutUnit position="center" styleClass="content">
+		
+		<p:layoutUnit position="center" styleClass="content" header="Manutenção de Usuários">
 			<h:form id="datatableForm">
-				<p:dataTable id="cars" var="users" value="#{user.listUsers}" widgetVar="usersList">  
+			
+				<p:poll interval="5" update=":datatableForm:userDatatable"/>
+				
+				<p:dataTable id="userDatatable" var="users" value="#{user.listUsers}" widgetVar="usersList" styleClass="datatable-user">  
 			        <p:column headerText="Matrícula" style="width:15%" styleClass="column-datatable">  
 			            <h:outputText value="#{users.registration}" styleClass="value-datatable"/>  
 			        </p:column>  
@@ -32,21 +40,22 @@
 			        </p:column>  
 			  
 			        <p:column headerText="Ativo" style="width:5%" styleClass="column-datatable">  
-			            <h:outputText value="#{users.active}" styleClass="value-datatable"/>  
+			            <h:outputText rendered="#{users.active}" value="Sim" styleClass="value-datatable"/>  
+			            <h:outputText rendered="#{users.active == false}" value="Não" styleClass="value-datatable"/>  
 			        </p:column>  
 			  
-			        <p:column style="width:1%" styleClass="column-datatable">  
-			                <p:commandButton id="btEditUser" oncomplete="" icon="ui-icon-pencil" title="Editar">  
+			        <p:column style="width:1%; text-align:center !important;" styleClass="column-datatable">  
+		                <p:commandButton id="btEditUser" oncomplete="" icon="ui-icon-pencil" title="Editar">  
 			                <f:setPropertyActionListener value="" target="" styleClass="value-datatable"/>  
-			            </p:commandButton>  
+		           		</p:commandButton>  
+			        </p:column> 
+			        <p:column style="width:1%; text-align:center !important;" styleClass="column-datatable">  
+	                	<p:commandButton id="btViewUser" oncomplete="viewUser.show()" icon="ui-icon-search" title="Visualisar"> 
+		                	<f:setPropertyActionListener value="#{users}" target="#{user.selectedUser}" styleClass="value-datatable"/>  
+		            	</p:commandButton>  
 			        </p:column>  
-			        <p:column style="width:1%" styleClass="column-datatable">  
-			                <p:commandButton id="btViewUser" oncomplete="viewUser.show()" icon="ui-icon-search" title="Visualisar">  
-			                <f:setPropertyActionListener value="#{users}" target="#{user.selectedUser}" styleClass="value-datatable"/>  
-			            </p:commandButton>  
-			        </p:column>  
-			        <p:column style="width:1%" styleClass="column-datatable">  
-			                <p:commandButton id="btDeleteUser" oncomplete="confirmationDeleteUser.show()" icon="ui-icon-trash" title="Remover">  
+			        <p:column style="width:1%; text-align:center !important;" styleClass="column-datatable">  
+		                <p:commandButton id="btDeleteUser" oncomplete="confirmationDeleteUser.show()" icon="ui-icon-trash" title="Remover">  
 			                <f:setPropertyActionListener value="#{users}" target="#{user.selectedUser}" styleClass="value-datatable"/>  
 			            </p:commandButton>  
 			        </p:column>  
@@ -56,7 +65,7 @@
 		</p:layoutUnit>
 	</p:layout>
 	
-	<p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="slide" width="500">
+	<p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="fade" width="500">
 		<h:form prependId="false">
 			<h:panelGrid id="panelUpdateUser" columns="2" style="margin-bottom:10px">
 				<h:outputLabel for="updateRegistration" value="Matrícula:" />
@@ -81,38 +90,38 @@
 		</h:form>
 	</p:dialog>
 	
-	<p:dialog header="Informações do Usuário" widgetVar="viewUser" resizable="false" modal="true" showEffect="slide" width="500">
+	<p:dialog header="Informações do Usuário" widgetVar="viewUser" resizable="false" modal="true" showEffect="fade" width="600">
 		<h:form prependId="panelViewUser">
 			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
 				<h:outputLabel for="viewRegistration" value="Matrícula:" />
-				<p:inputText value="#{user.selectedUser.registration}" id="viewRegistration" disabled="true" />
+				<p:inputText value="#{user.selectedUser.registration}" id="viewRegistration" readonly="true" size="10"/>
 
 				<h:outputLabel for="viewName" value="Nome:" />
-				<p:inputText value="#{user.selectedUser.name}" id="viewName" disabled="true" size="100"/>
+				<p:inputText value="#{user.selectedUser.name}" id="viewName" readonly="true" size="30"/>
 
 				<h:outputLabel for="viewEmail" value="E-mail:" />
-				<p:inputText value="#{user.selectedUser.email}" id="viewEmail" disabled="true"/>
+				<p:inputText value="#{user.selectedUser.email}" id="viewEmail" readonly="true" size="30"/>
 
 				<h:outputLabel for="viewDate" value="Data de Registro:" />
-				<p:inputText value="#{user.selectedUser.registrationDate}" id="viewDate" disabled="true"/>
+				<p:inputText value="#{user.selectedUser.registrationDate}" id="viewDate" readonly="true" size="10"/>
 				
 				<h:outputLabel for="viewPhoto" value="Foto:" />
-				<p:inputText value="#{user.selectedUser.photo}" id="viewPhoto" disabled="true"/>
+				<p:inputText value="#{user.selectedUser.photo}" id="viewPhoto" readonly="true" size="30"/>
 				
 				<h:outputLabel for="viewLimit" value="Limite de Cópias:" />
-				<p:inputText value="#{user.selectedUser.copyLimit}" id="viewLimit" disabled="true"/>
+				<p:inputText value="#{user.selectedUser.copyLimit}" id="viewLimit" readonly="true" size="10"/>
 				
 				<h:outputLabel value="Administrador:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedAdmin}"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedAdmin}" readonly="true"/>
 				
 				<h:outputLabel value="Professor:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedTeacher}"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedTeacher}" readonly="true"/>
 				
 				<h:outputLabel value="Chefe de Departamento:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedBoss}"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedBoss}" readonly="true"/>
 				
 				<h:outputLabel value="Operador:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedOperator}"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedOperator}" readonly="true"/>
 
 				<p:commandButton oncomplete="viewUser.hide()" value="Fechar" />
 			</h:panelGrid>
@@ -121,7 +130,7 @@
 	
 	<h:form>  
 	    <p:confirmDialog id="confirmDeleteUser" message="Deseja remover este usuário?" header="Remover usuário" severity="alert" widgetVar="confirmationDeleteUser">  
-	        <p:commandButton id="confirmDelete" value="Sim" onclick="confirmationDeleteUser.hide()" update=":datatableForm:cars :resultMessage" actionListener="#{user.deleteUser}" />  
+	        <p:commandButton id="confirmDelete" value="Sim" onclick="confirmationDeleteUser.hide()" update=":datatableForm:userDatatable :resultMessage" actionListener="#{user.deleteUser}" />  
 	        <p:commandButton id="decline" value="Não" onclick="confirmationDeleteUser.hide()" type="button" />   
 	    </p:confirmDialog>  
 	</h:form>

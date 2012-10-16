@@ -9,6 +9,7 @@
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/default.jsf" access="hasAnyRole('ROLE_ADM','ROLE_BOSS','ROLE_TEACHER','ROLE_OPERATOR')"/>
+        <intercept-url pattern="/form/user.jsf" access="hasAnyRole('ROLE_ADM')"/>
         <intercept-url pattern="/WebcopiasService" access="permitAll"/>
         <form-login login-page="/login.jsf" default-target-url="/default.jsf" authentication-failure-url="/login.jsf?erro=true"/>
         <access-denied-handler error-page="/form/denied.jsf"/>

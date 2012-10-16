@@ -2,9 +2,12 @@ package br.com.webcopias.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -16,12 +19,12 @@ public class User {
 	private Date registrationDate;
 	private Boolean active;
 	private Integer copyLimit;
-	private List<Role> role;
+	private Set<Role> role;
 	
 	public User(){};
 	
 	public User(String registration, String name, String email, Date registrationDate,
-			Boolean active,String password, String photo, Integer copyLimit, List<Role> role) {
+			Boolean active,String password, String photo, Integer copyLimit, Set<Role> role) {
 		super();
 		this.registration = registration;
 		this.name = name;
@@ -101,12 +104,12 @@ public class User {
 		this.copyLimit = copyLimit;
 	}
 
-	@ManyToMany
-	public List<Role> getRole() {
+	@ManyToMany(fetch=FetchType.EAGER)
+	public Set<Role> getRole() {
 		return role;
 	}
 
-	public void setRole(List<Role> role) {
+	public void setRole(Set<Role> role) {
 		this.role = role;
 	}
 	
