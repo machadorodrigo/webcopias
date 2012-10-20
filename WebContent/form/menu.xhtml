@@ -10,7 +10,6 @@
 			<p:menu styleClass="menuList">  
 		        <p:submenu styleClass="">  
 		            <p:menuitem value="Usuários" rendered="#{user.isAdmin}" icon="ui-icon-person" url="/form/user.jsf"/>
-		            <p:menuitem value="Grupo" icon="ui-icon-home" rendered="#{user.isAdmin}" url="/form/group.jsf"/>
 		            <p:menuitem value="Departamento" icon="ui-icon-contact" rendered="#{user.isAdmin}" url="/form/department.jsf"/>
 		            <p:menuitem value="Disciplina" icon="ui-icon-note" rendered="#{user.isAdmin || user.isBoss}" url="/form/discipline.jsf"/>
 		            <p:menuitem value="Serviço" icon="ui-icon-cart" rendered="#{user.isOperator}" url="/form/service.jsf"/>  

@@ -10,17 +10,51 @@
 <body>
 	<p:growl id="resultMessage" showDetail="true" life="4000" />
 	<p:layout fullPage="true" styleClass="container">
+	
 		<p:layoutUnit position="north" size="95" resizable="false" closable="false"	collapsible="false" styleClass="header">
 			<ui:include src="/form/header.xhtml"></ui:include>
 		</p:layoutUnit>
+		
 		<p:layoutUnit position="west" size="200" header="Navegação" collapsible="true"	styleClass="menu" style="padding:0 !important;">
 			<ui:include src="/form/menu.xhtml"></ui:include>
 		</p:layoutUnit>
-		<p:layoutUnit position="center" styleClass="content">
-			<h:form>
+		
+		<p:layoutUnit position="center" styleClass="content" header="Manutenção de Departamentos">
+			<h:form id="datatableForm">
+
+				<p:dataTable id="departmentDatatable" var="departments" value="#{department.listDepartments}" widgetVar="departmentsList" styleClass="datatable-department">
+					<f:facet name="header">
+						<p:commandButton id="btAddDepartment" styleClass="addDepartmentButton" actionListener="#{department.prepareCreateDepartment}" oncomplete="addNewDepartment.show()" value="Adicionar Departamento" icon="ui-icon-circle-plus" title="Adicionar Departamento" ></p:commandButton>
+					</f:facet>  
+			        <p:column headerText="Código" style="width:15%" styleClass="column-datatable">  
+			            <h:outputText value="#{departments.departamentCode}" styleClass="value-datatable"/>  
+			        </p:column>  
+			  
+			        <p:column headerText="Descrição" style="width:20%" styleClass="column-datatable">  
+			            <h:outputText value="#{departments.departmentName}" styleClass="value-datatable"/>  
+			        </p:column>  
+			  
+			        <p:column headerText="Chefe do Departamento" style="width:5%" styleClass="column-datatable">  
+			            <h:outputText value="#{departments.registration.name}" styleClass="value-datatable"/>  
+			        </p:column>  
+			        
+			        <p:column style="width:5%; text-align:center !important;" styleClass="column-datatable">  
+		                <p:commandButton id="btEditDepartment" oncomplete="" icon="ui-icon-pencil" title="Editar">  
+			                <f:setPropertyActionListener value="#{departments}" target="" styleClass="value-datatable"/>  
+		           		</p:commandButton>  
+	                	<p:commandButton id="btViewDepartment" oncomplete="viewDepartment.show()" icon="ui-icon-search" title="Visualisar"> 
+		                	<f:setPropertyActionListener value="#{departments}" target="#{department.department}" styleClass="value-datatable"/>  
+		            	</p:commandButton>  
+		                <p:commandButton id="btDeleteDepartment" oncomplete="confirmationDeleteDepartment.show()" icon="ui-icon-trash" title="Remover">  
+			                <f:setPropertyActionListener value="#{departments}" target="#{department.department}" styleClass="value-datatable"/>  
+			            </p:commandButton>  
+			        </p:column>  
+			  
+			    </p:dataTable>
 			</h:form>
 		</p:layoutUnit>
 	</p:layout>
+	
 	<p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="slide" width="500">
 		<h:form prependId="false">
 			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
@@ -42,6 +76,33 @@
 				<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar" >
 					<f:ajax event="click" execute="updateName" render="userMenu" update="userMenu"/>
 				</p:commandButton>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Adicionar Departamento" widgetVar="addNewDepartment" resizable="false" modal="true" showEffect="fade" width="600">
+		<h:form prependId="false" id="formAddDepartment">
+			<h:panelGrid id="panelAddDepartment" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="addCode" value="Código:" />
+				<p:inputText value="#{department.department.departamentCode}" id="addCode" size="10"/>
+
+				<h:outputLabel for="addName" value="Nome:" />
+				<p:inputText value="#{department.department.departmentName}" id="addName" size="30"/>
+
+				<h:outputLabel for="addBoss" value="Chefe do departamento:" />
+				<p:selectOneMenu id="addBoss" value="#{department.selectedBoss}">
+					<f:selectItems value="#{department.heads}" />
+				</p:selectOneMenu>
+				
+				
+				 
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton actionListener="#{department.createNewDepartment}" oncomplete="addNewDepartment.hide()" 
+					update=":datatableForm:departmentDatatable :resultMessage" value="Comfirmar" />
+				
+					<p:commandButton oncomplete="addNewDepartment.hide()" value="Fechar" />
+				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>
