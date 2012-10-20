@@ -3,14 +3,22 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>WebCópias - Manutenção de Usuários</title>
-	<link rel="shortcut icon" href="../assets/image/favicon.ico" />
-	<link rel="stylesheet" href="../assets/css/styleUser.css" />
+<title>WebCópias - Manutenção de Usuários</title>
+<link rel="shortcut icon" href="../assets/image/favicon.ico" />
+<link rel="stylesheet" href="../assets/css/styleUser.css" />
+<script type="text/javascript">
+	function clearFields(fields){
+		var fieldsSplit = fields.split(",");
+		
+		for(var i in fieldsSplit){
+			document.getElementById(fieldsSplit[i]).value = "";
+		}
+	}
+</script>
 </h:head>
 <body>
 
 	<p:growl id="resultMessage" showDetail="true" life="4000" />
-	
 	
 	<p:layout fullPage="true" styleClass="container">
 		<p:layoutUnit position="north" size="95" resizable="false" closable="false"	collapsible="false" styleClass="header">
@@ -23,10 +31,13 @@
 		
 		<p:layoutUnit position="center" styleClass="content" header="Manutenção de Usuários">
 			<h:form id="datatableForm">
-			
+
 				<p:poll interval="5" update=":datatableForm:userDatatable"/>
 				
-				<p:dataTable id="userDatatable" var="users" value="#{user.listUsers}" widgetVar="usersList" styleClass="datatable-user">  
+				<p:dataTable id="userDatatable" var="users" value="#{user.listUsers}" widgetVar="usersList" styleClass="datatable-user">
+					<f:facet name="header">
+						<p:commandButton id="btAddUser" onclick="clearFields('addRegistration,addName,addPassword,addEmail,addPhoto,addLimit')" styleClass="addUserButton" actionListener="#{user.prepareCreateUser}" oncomplete="addNewUser.show()" value="Adicionar Usuário" icon="ui-icon-circle-plus" title="Adicionar Usuário" ></p:commandButton>
+					</f:facet>  
 			        <p:column headerText="Matrícula" style="width:15%" styleClass="column-datatable">  
 			            <h:outputText value="#{users.registration}" styleClass="value-datatable"/>  
 			        </p:column>  
@@ -44,17 +55,13 @@
 			            <h:outputText rendered="#{users.active == false}" value="Não" styleClass="value-datatable"/>  
 			        </p:column>  
 			  
-			        <p:column style="width:1%; text-align:center !important;" styleClass="column-datatable">  
-		                <p:commandButton id="btEditUser" oncomplete="" icon="ui-icon-pencil" title="Editar">  
-			                <f:setPropertyActionListener value="" target="" styleClass="value-datatable"/>  
+			        <p:column style="width:5%; text-align:center !important;" styleClass="column-datatable">  
+		                <p:commandButton id="btEditUser" oncomplete="editUser.show()" icon="ui-icon-pencil" update=":formEditUser:panelEditUser" title="Editar">  
+			                <f:setPropertyActionListener value="#{users}" target="#{user.selectedUser}" styleClass="value-datatable"/>  
 		           		</p:commandButton>  
-			        </p:column> 
-			        <p:column style="width:1%; text-align:center !important;" styleClass="column-datatable">  
-	                	<p:commandButton id="btViewUser" oncomplete="viewUser.show()" icon="ui-icon-search" title="Visualisar"> 
+	                	<p:commandButton id="btViewUser" oncomplete="viewUser.show()" icon="ui-icon-search" update=":formViewUser:panelViewUser" title="Visualisar"> 
 		                	<f:setPropertyActionListener value="#{users}" target="#{user.selectedUser}" styleClass="value-datatable"/>  
 		            	</p:commandButton>  
-			        </p:column>  
-			        <p:column style="width:1%; text-align:center !important;" styleClass="column-datatable">  
 		                <p:commandButton id="btDeleteUser" oncomplete="confirmationDeleteUser.show()" icon="ui-icon-trash" title="Remover">  
 			                <f:setPropertyActionListener value="#{users}" target="#{user.selectedUser}" styleClass="value-datatable"/>  
 			            </p:commandButton>  
@@ -75,24 +82,26 @@
 				<p:inputText value="#{user.loggedUser.name}" id="updateName" />
 
 				<h:outputLabel for="updatePassword" value="Senha:" />
-				<h:inputSecret value="#{user.loggedUser.password}" id="updatePassword" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover" />
+				<p:password value="#{user.loggedUser.password}" id="updatePassword" redisplay="true"/>
 
 				<h:outputLabel for="updateEmail" value="E-mail:" />
 				<p:inputText value="#{user.loggedUser.email}" id="updateEmail" required="false" />
 
 				<h:outputLabel for="updatePhoto" value="Foto:" />
 				<p:inputText value="#{user.loggedUser.photo}" id="updatePhoto" required="false" />
-
-				<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar" >
-					<f:ajax event="click" execute="updateName" render="userMenu" update="userMenu"/>
-				</p:commandButton>
+				
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar"/>
+				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>
 	
 	<p:dialog header="Informações do Usuário" widgetVar="viewUser" resizable="false" modal="true" showEffect="fade" width="600">
-		<h:form prependId="panelViewUser">
-			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
+		<h:form prependId="false" id="formViewUser">
+			<h:panelGrid id="panelViewUser" columns="2" style="margin-bottom:10px">
 				<h:outputLabel for="viewRegistration" value="Matrícula:" />
 				<p:inputText value="#{user.selectedUser.registration}" id="viewRegistration" readonly="true" size="10"/>
 
@@ -112,18 +121,125 @@
 				<p:inputText value="#{user.selectedUser.copyLimit}" id="viewLimit" readonly="true" size="10"/>
 				
 				<h:outputLabel value="Administrador:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedAdmin}" readonly="true"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedAdmin}" disabled="true"/>
 				
 				<h:outputLabel value="Professor:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedTeacher}" readonly="true"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedTeacher}" disabled="true"/>
 				
 				<h:outputLabel value="Chefe de Departamento:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedBoss}" readonly="true"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedBoss}" disabled="true"/>
 				
 				<h:outputLabel value="Operador:" />
-				<p:selectBooleanCheckbox value="#{user.isSelectedOperator}" readonly="true"/>
+				<p:selectBooleanCheckbox value="#{user.isSelectedOperator}" disabled="true"/>
+				
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton oncomplete="viewUser.hide()" value="Fechar" />
+				</f:facet>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Adicionar Usuário" widgetVar="addNewUser" resizable="false" modal="true" showEffect="fade" width="600">
+		<h:form prependId="false" id="formAddUser">
+			<h:panelGrid id="panelAddUser" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="addRegistration" value="Matrícula:" />
+				<p:inputText value="#{user.selectedUser.registration}" id="addRegistration" size="10"/>
 
-				<p:commandButton oncomplete="viewUser.hide()" value="Fechar" />
+				<h:outputLabel for="addName" value="Nome:" />
+				<p:inputText value="#{user.selectedUser.name}" id="addName" size="30"/>
+
+				<h:outputLabel for="addPassword" value="Senha:" />
+				<p:password value="#{user.selectedUser.password}" id="addPassword" redisplay="true" size="10"/>
+
+				<h:outputLabel for="addEmail" value="E-mail:" />
+				<p:inputText value="#{user.selectedUser.email}" id="addEmail" size="30"/>
+				
+				<h:outputLabel for="addPhoto" value="Foto:" />
+				<p:inputText value="#{user.selectedUser.photo}" id="addPhoto" size="30"/>
+				
+				<h:outputLabel for="addLimit" value="Limite de Cópias:" />
+				<p:inputText value="#{user.selectedUser.copyLimit}" id="addLimit" size="10"/>
+				
+				<h:outputLabel value="Ativo:" />
+				<p:selectBooleanCheckbox value="#{user.isActive}" />
+				
+				<br/>
+				
+				<h:outputText value="Grupos:" />
+				
+				<h:outputLabel value="Administrador:" />
+				<p:selectBooleanCheckbox value="#{user.isNewAdmin}" />
+				
+				<h:outputLabel value="Professor:" />
+				<p:selectBooleanCheckbox value="#{user.isNewTeacher}" />
+				
+				<h:outputLabel value="Chefe de Departamento:" />
+				<p:selectBooleanCheckbox value="#{user.isNewBoss}"/>
+				
+				<h:outputLabel value="Operador:" />
+				<p:selectBooleanCheckbox value="#{user.isNewOperator}" readonly="true"/>
+				
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton actionListener="#{user.createNewUser}" oncomplete="addNewUser.hide()" 
+					update=":datatableForm:userDatatable :resultMessage" value="Comfirmar" />
+				
+					<p:commandButton oncomplete="addNewUser.hide()" value="Fechar" />
+				</f:facet>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Editar Usuário" widgetVar="editUser" resizable="false" modal="true" showEffect="fade" width="600">
+		<h:form prependId="false" id="formEditUser">
+			<h:panelGrid id="panelEditUser" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="editRegistration" value="Matrícula:" />
+				<p:inputText value="#{user.selectedUser.registration}" id="editRegistration" readonly="true" size="10"/>
+
+				<h:outputLabel for="editName" value="Nome:" />
+				<p:inputText value="#{user.selectedUser.name}" id="editName" size="30"/>
+
+				<h:outputLabel for="editPassword" value="Senha:" />
+				<p:password value="#{user.selectedUser.password}" id="editPassword" redisplay="true" size="10"/>
+
+				<h:outputLabel for="editEmail" value="E-mail:" />
+				<p:inputText value="#{user.selectedUser.email}" id="editEmail" size="30"/>
+				
+				<h:outputLabel for="editPhoto" value="Foto:" />
+				<p:inputText value="#{user.selectedUser.photo}" id="editPhoto" size="30"/>
+				
+				<h:outputLabel for="editLimit" value="Limite de Cópias:" />
+				<p:inputText value="#{user.selectedUser.copyLimit}" id="editLimit" size="10"/>
+				
+				<h:outputLabel value="Ativo:" />
+				<p:selectBooleanCheckbox value="#{user.isActive}" />
+				
+				<br/>
+				
+				<h:outputText value="Grupos:" />
+				
+				<h:outputLabel value="Administrador:" />
+				<p:selectBooleanCheckbox value="#{user.isNewAdmin}" />
+				
+				<h:outputLabel value="Professor:" />
+				<p:selectBooleanCheckbox value="#{user.isNewTeacher}" />
+				
+				<h:outputLabel value="Chefe de Departamento:" />
+				<p:selectBooleanCheckbox value="#{user.isNewBoss}"/>
+				
+				<h:outputLabel value="Operador:" />
+				<p:selectBooleanCheckbox value="#{user.isNewOperator}" readonly="true"/>
+				
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton actionListener="#{user.updateUser}" oncomplete="editUser.hide()" 
+					update=":datatableForm:userDatatable :resultMessage" value="Comfirmar" />
+					<p:commandButton oncomplete="editUser.hide()" value="Fechar" />
+				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>

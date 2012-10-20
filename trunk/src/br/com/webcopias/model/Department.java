@@ -1,6 +1,6 @@
 package br.com.webcopias.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +15,11 @@ import javax.persistence.Table;
 public class Department {
 	private String departamentCode,departmentName;
 	private User registration;
-	private List<Discipline> discipline;
+	private Set<Discipline> discipline;
+	
 	public Department(){};
 	
-	public Department(String departamentCode, String departmentName, User registration, List<Discipline> discipline) {
+	public Department(String departamentCode, String departmentName, User registration, Set<Discipline> discipline) {
 		super();
 		this.departamentCode = departamentCode;
 		this.departmentName = departmentName;
@@ -54,11 +55,11 @@ public class Department {
 	}
 	
 	@ManyToMany(fetch=FetchType.EAGER)
-	public List<Discipline> getDiscipline() {
+	public Set<Discipline> getDiscipline() {
 		return discipline;
 	}
 
-	public void setDiscipline(List<Discipline> discipline) {
+	public void setDiscipline(Set<Discipline> discipline) {
 		this.discipline = discipline;
 	}
 
