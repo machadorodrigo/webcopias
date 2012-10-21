@@ -90,7 +90,6 @@
 				<h:outputLabel for="updatePhoto" value="Foto:" />
 				<p:inputText value="#{user.loggedUser.photo}" id="updatePhoto" required="false" />
 				
-				
 				<f:facet name="footer">
 					<p:separator/>
 					<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar"/>
@@ -131,7 +130,6 @@
 				
 				<h:outputLabel value="Operador:" />
 				<p:selectBooleanCheckbox value="#{user.isSelectedOperator}" disabled="true"/>
-				
 				
 				<f:facet name="footer">
 					<p:separator/>

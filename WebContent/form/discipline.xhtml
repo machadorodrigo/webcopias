@@ -9,18 +9,143 @@
 </h:head>
 <body>
 	<p:growl id="resultMessage" showDetail="true" life="4000" />
+	
 	<p:layout fullPage="true" styleClass="container">
 		<p:layoutUnit position="north" size="95" resizable="false" closable="false"	collapsible="false" styleClass="header">
 			<ui:include src="/form/header.xhtml"></ui:include>
 		</p:layoutUnit>
+		
 		<p:layoutUnit position="west" size="200" header="Navegação" collapsible="true"	styleClass="menu" style="padding:0 !important;">
 			<ui:include src="/form/menu.xhtml"></ui:include>
 		</p:layoutUnit>
-		<p:layoutUnit position="center" styleClass="content">
-			<h:form>
+		
+		<p:layoutUnit position="center" styleClass="content" header="Manutenção de Disciplinas">
+			<h:form id="datatableForm">
+				<p:dataTable id="disciplineDatatable" var="disciplines" value="#{discipline.listDisciplines}" widgetVar="disciplinesList" styleClass="datatable-discipline">
+					<f:facet name="header">
+						<p:commandButton id="btAddDiscipline" styleClass="addDisciplineButton" update=":formAddDiscipline:panelAddDiscipline"
+						 actionListener="#{discipline.prepareCreateDiscipline}" oncomplete="addNewDiscipline.show()"
+						 value="Adicionar Disciplina" icon="ui-icon-circle-plus" title="Adicionar Disciplina" />
+					</f:facet>  
+			        <p:column headerText="Código" style="width:15%" styleClass="column-datatable">  
+			            <h:outputText value="#{disciplines.disciplineCode}" styleClass="value-datatable"/>  
+			        </p:column>  
+			  
+			        <p:column headerText="Descrição" style="width:20%" styleClass="column-datatable">  
+			            <h:outputText value="#{disciplines.disciplineName}" styleClass="value-datatable"/>  
+			        </p:column>  
+			  
+			        <p:column headerText="Limite de cópias:" style="width:5%" styleClass="column-datatable">  
+			            <h:outputText value="#{disciplines.copyLimit}" styleClass="value-datatable"/>  
+			        </p:column>  
+			        
+			        <p:column style="width:5%; text-align:center !important;" styleClass="column-datatable">  
+		                <p:commandButton id="btEditDiscipline" actionListener="#{discipline.getDisciplinesDualList}" update=":formEditDiscipline:panelEditDiscipline" oncomplete="editDiscipline.show()" icon="ui-icon-pencil" title="Editar">  
+			                <f:setPropertyActionListener value="#{disciplines}" target="#{discipline.discipline}" styleClass="value-datatable"/>  
+		           		</p:commandButton>  
+	                	<p:commandButton id="btViewDiscipline" oncomplete="viewDiscipline.show()" update=":formViewDiscipline:panelViewDiscipline" icon="ui-icon-search" title="Visualisar"> 
+		                	<f:setPropertyActionListener value="#{disciplines}" target="#{discipline.discipline}" styleClass="value-datatable"/>  
+		            	</p:commandButton>  
+		                <p:commandButton id="btDeleteDiscipline" oncomplete="confirmationDeleteDiscipline.show()" icon="ui-icon-trash" title="Remover">  
+			                <f:setPropertyActionListener value="#{disciplines}" target="#{discipline.discipline}" styleClass="value-datatable"/>  
+			            </p:commandButton>  
+			        </p:column>  
+			  
+			    </p:dataTable>
 			</h:form>
 		</p:layoutUnit>
 	</p:layout>
+	
+	<p:dialog header="Adicionar Disciplina" widgetVar="addNewDiscipline" resizable="false" modal="true" showEffect="fade" width="510">
+		<h:form prependId="false" id="formAddDiscipline">
+			<h:panelGrid id="panelAddDiscipline" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="addCode" value="Código:" />
+				<p:inputText value="#{discipline.discipline.disciplineCode}" id="addCode" size="10"/>
+
+				<h:outputLabel for="addName" value="Nome:" />
+				<p:inputText value="#{discipline.discipline.disciplineName}" id="addName" size="30"/>
+
+				<h:outputLabel for="addCopyLimit" value="Limite de cópias:" />
+				<p:inputText value="#{discipline.discipline.copyLimit}" id="addCopyLimit" size="10"/>
+				
+				<f:facet name="footer">
+					<p:pickList id="disciplinesPickList" value="#{discipline.users}" var="disciplineList"   
+	                itemLabel="#{disciplineList.name}" itemValue="#{disciplineList}" converter="userConverter">
+	                
+	                	<f:facet name="sourceCaption">Usuários existentes</f:facet>  
+	        			<f:facet name="targetCaption">Usuários da disciplina</f:facet>
+	        			
+	                </p:pickList> 
+				</f:facet>
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton actionListener="#{discipline.createNewDiscipline}" oncomplete="addNewDiscipline.hide()" 
+					update=":datatableForm:disciplineDatatable :resultMessage" value="Comfirmar" />
+				
+					<p:commandButton oncomplete="addNewDiscipline.hide()" value="Fechar" />
+				</f:facet>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Informações da Disciplina" widgetVar="viewDiscipline" resizable="false" modal="true" showEffect="fade" width="600">
+		<h:form prependId="false" id="formViewDiscipline">
+			<h:panelGrid id="panelViewDiscipline" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="viewCode" value="Código:" />
+				<p:inputText value="#{discipline.discipline.disciplineCode}" id="viewCode" readonly="true" size="10"/>
+
+				<h:outputLabel for="viewName" value="Nome:" />
+				<p:inputText value="#{discipline.discipline.disciplineName}" id="viewName" readonly="true" size="30"/>
+
+				<h:outputLabel for="viewCopyLimit" value="Limite de cópias:" />
+				<p:inputText value="#{discipline.discipline.copyLimit}" id="viewCopyLimit" readonly="true" size="10"/>
+
+				<h:outputLabel for="dataListTeacher" value="Professores:" />
+				<p:dataList value="#{discipline.userToList}" id="dataListTeacher" var="discList" itemType="circle">  
+    				#{discList.name} 
+				</p:dataList>
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton oncomplete="viewDiscipline.hide()" value="Fechar" />
+				</f:facet>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Editar Disciplina" widgetVar="editDiscipline" resizable="false" modal="true" showEffect="fade" width="600">
+		<h:form prependId="false" id="formEditDiscipline">
+			<h:panelGrid id="panelEditDiscipline" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="editCode" value="Código:" />
+				<p:inputText value="#{discipline.discipline.disciplineCode}" id="editCode" size="10"/>
+
+				<h:outputLabel for="editName" value="Nome:" />
+				<p:inputText value="#{discipline.discipline.disciplineName}" id="editName" size="30"/>
+
+				<h:outputLabel for="editCopyLimit" value="Limite de cópias:" />
+				<p:inputText value="#{discipline.discipline.copyLimit}" id="editCopyLimit" size="10"/>
+				
+				<f:facet name="footer">
+					<p:pickList id="editDisciplinesPickList" value="#{discipline.users}" var="disciplineList"   
+	                itemLabel="#{disciplineList.name}" itemValue="#{disciplineList}" converter="userConverter">
+	                
+	                	<f:facet name="sourceCaption">Usuários existentes</f:facet>  
+	        			<f:facet name="targetCaption">Usuários da disciplina</f:facet>
+	        			
+	                </p:pickList> 
+				</f:facet>
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton actionListener="#{discipline.updateDiscipline}" oncomplete="editDiscipline.hide()" 
+					update=":datatableForm:disciplineDatatable :resultMessage" value="Comfirmar" />
+					<p:commandButton oncomplete="editDiscipline.hide()" value="Fechar" />
+				</f:facet>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
 	<p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="slide" width="500">
 		<h:form prependId="false">
 			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
@@ -31,19 +156,27 @@
 				<p:inputText value="#{user.loggedUser.name}" id="updateName" />
 
 				<h:outputLabel for="updatePassword" value="Senha:" />
-				<h:inputSecret value="#{user.loggedUser.password}" id="updatePassword" styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover" />
+				<p:password value="#{user.loggedUser.password}" id="updatePassword" redisplay="true"/>
 
 				<h:outputLabel for="updateEmail" value="E-mail:" />
 				<p:inputText value="#{user.loggedUser.email}" id="updateEmail" required="false" />
 
 				<h:outputLabel for="updatePhoto" value="Foto:" />
 				<p:inputText value="#{user.loggedUser.photo}" id="updatePhoto" required="false" />
-
-				<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar" >
-					<f:ajax event="click" execute="updateName" render="userMenu" update="userMenu"/>
-				</p:commandButton>
+				
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar" />
+				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>
+	
+	<h:form>  
+	    <p:confirmDialog id="confirmDeleteDiscipline" message="Deseja remover esta disciplina?" header="Remover disciplina" severity="alert" widgetVar="confirmationDeleteDiscipline">  
+	        <p:commandButton id="confirmDelete" value="Sim" onclick="confirmationDeleteDiscipline.hide()" update=":datatableForm:disciplineDatatable :resultMessage" actionListener="#{discipline.deleteDiscipline}" />  
+	        <p:commandButton id="decline" value="Não" onclick="confirmationDeleteDiscipline.hide()" type="button" />   
+	    </p:confirmDialog>  
+	</h:form>
 </body>
 </html>
