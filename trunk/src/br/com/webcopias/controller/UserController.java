@@ -19,7 +19,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import br.com.webcopias.dao.DepartmentImpl;
+import br.com.webcopias.dao.DisciplineImpl;
 import br.com.webcopias.dao.UserImpl;
+import br.com.webcopias.model.Department;
+import br.com.webcopias.model.Discipline;
 import br.com.webcopias.model.Role;
 import br.com.webcopias.model.User;
 
@@ -28,7 +32,6 @@ import br.com.webcopias.model.User;
 public class UserController {
 
 	private String currentUser;
-	@SuppressWarnings("unused")
 	private Boolean isAdmin,isBoss,isTeacher,isOperator,isSelectedAdmin,isSelectedBoss,isSelectedTeacher,isSelectedOperator;
 	private Boolean isNewAdmin,isNewBoss,isNewTeacher,isNewOperator,isActive;
 	private Collection<GrantedAuthority> roleList;
@@ -275,6 +278,30 @@ public class UserController {
 		return model;
 	}
 	
+	public boolean containsUserInDepartment(String registration){
+		DepartmentImpl departmentImpl = new DepartmentImpl();
+		List<Department> department = departmentImpl.getDepartmentsList();
+		
+		for(Department dep : department){
+			if(registration.equals(dep.getRegistration().getRegistration())) return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean containsUserInDiscipline(String registration){
+		DisciplineImpl disciplineImpl = new DisciplineImpl();
+		List<Discipline> discipline = disciplineImpl.getDisciplinesList();
+		
+		for(Discipline disc : discipline){
+			for(User usr : disc.getRegistration()){
+				if(registration.equals(usr.getRegistration())) return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public void deleteUser(ActionEvent acEvent){
 		UserImpl userImpl = new UserImpl();
 		FacesMessage msg = null;
@@ -282,6 +309,10 @@ public class UserController {
 		try{
 			if(this.getSelectedUser().getRegistration().equals(this.getLoggedUser().getRegistration())){
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Não é possível remover seu próprio usuário.");
+			}else if(this.containsUserInDepartment(this.getSelectedUser().getRegistration())){
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Não é possível remover este usuário, pois ele está relacionado a um ou mais departamentos.");
+			}else if(this.containsUserInDiscipline(this.getSelectedUser().getRegistration())){
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Não é possível remover este usuário, pois ele está relacionado a uma ou mais disciplinas.");
 			}else{
 				userImpl.remove(this.getSelectedUser());
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "O usuário foi removido.");
@@ -435,5 +466,32 @@ public class UserController {
 		
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
+	
+	/*
+	 * Getters e Setters não utilizados
+	 */
+	
+	public String getCurrentUser() {
+		return currentUser;
+	}
 
+	public void setCurrentUser(String currentUser) {
+		this.currentUser = currentUser;
+	}
+
+	public void setIsSelectedAdmin(Boolean isSelectedAdmin) {
+		this.isSelectedAdmin = isSelectedAdmin;
+	}
+
+	public void setIsSelectedBoss(Boolean isSelectedBoss) {
+		this.isSelectedBoss = isSelectedBoss;
+	}
+
+	public void setIsSelectedTeacher(Boolean isSelectedTeacher) {
+		this.isSelectedTeacher = isSelectedTeacher;
+	}
+
+	public void setIsSelectedOperator(Boolean isSelectedOperator) {
+		this.isSelectedOperator = isSelectedOperator;
+	}
 }

@@ -2,9 +2,7 @@ package br.com.webcopias.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -28,7 +26,6 @@ import br.com.webcopias.model.User;
 public class DepartmentController {
 	private Department department;
 	private String selectedBoss;
-	@SuppressWarnings("unused")
 	private HashMap<String, String> heads;
 	private DualListModel<Discipline> listDiscipline;
 
@@ -171,6 +168,14 @@ public class DepartmentController {
 		}
 		
 		return boss;
+	}
+
+	/*
+	 * Getters e Setters não utilizados
+	 */
+	
+	public void setHeads(HashMap<String, String> heads) {
+		this.heads = heads;
 	}
 
 }

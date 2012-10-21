@@ -1,7 +1,6 @@
 package br.com.webcopias.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import br.com.webcopias.dao.RoleImpl;

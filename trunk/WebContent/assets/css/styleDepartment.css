@@ -35,6 +35,10 @@ body{
 	font-size: 12px !important;
 }
 
+.content{
+	border: 1px solid #dddddd !important;
+}
+
 .customUserMenu{
 	position: absolute !important;
 	right: 10px !important;
@@ -43,9 +47,16 @@ body{
 }
 
 .ui-layout-unit-header{
-	max-height: 15px !important;
-	border: none !important;
-	font-size: 11px !important;
+	font-family: Calibri !important;
+	color: #d94836 !important;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+.ui-layout-pane-center{
+	margin-top: 0px !important;
+	padding-top: 0px !important;
+	padding-left: 0px !important;
 }
 
 .menuList{

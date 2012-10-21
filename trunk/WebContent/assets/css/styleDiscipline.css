@@ -43,9 +43,10 @@ body{
 }
 
 .ui-layout-unit-header{
-	max-height: 15px !important;
-	border: none !important;
-	font-size: 11px !important;
+	font-family: Calibri !important;
+	color: #d94836 !important;
+	font-weight: bold;
+	font-size: 13px;
 }
 
 .menuList{
@@ -67,10 +68,40 @@ body{
 	border-bottom: 1px solid #dddddd !important;
 }
 
+.ui-layout-pane-center{
+	margin-top: 0px !important;
+	padding-top: 0px !important;
+	padding-left: 0px !important;
+}
+
+.content{
+	border: 1px solid #dddddd !important;
+}
+
 .ui-growl span{
 	font-size: 11px !important;
 }
 
 .ui-growl p{
 	font-size: 11px !important;
+}
+
+.addDisciplineButton{
+	float: left !important;
+}
+
+.addDisciplineButton span{
+	font-size: 11px !important;
+}
+
+.column-datatable{
+	font-size: 11px !important;
+}
+
+.value-datatable{
+	font-size: 11px !important;
+}
+
+.datatable-discipline{
+	margin-left: -1px !important;
 }

@@ -1,9 +1,10 @@
 package br.com.webcopias.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -13,11 +14,11 @@ import javax.persistence.Table;
 public class Discipline {
 	private Integer copyLimit;
 	private String disciplineCode,disciplineName;
-	private List<User> registration;
+	private Set<User> registration;
 	
 	public Discipline(){};
 	
-	public Discipline(String disciplineCode, String disciplineName, Integer copyLimit, List<User> registration) {
+	public Discipline(String disciplineCode, String disciplineName, Integer copyLimit, Set<User> registration) {
 		super();
 		this.disciplineCode = disciplineCode;
 		this.disciplineName = disciplineName;
@@ -46,12 +47,12 @@ public class Discipline {
 		this.copyLimit = copyLimit;
 	}
 	
-	@ManyToMany
-	public List<User> getRegistration() {
+	@ManyToMany(fetch=FetchType.EAGER)
+	public Set<User> getRegistration() {
 		return registration;
 	}
 
-	public void setRegistration(List<User> registration) {
+	public void setRegistration(Set<User> registration) {
 		this.registration = registration;
 	}
 }
