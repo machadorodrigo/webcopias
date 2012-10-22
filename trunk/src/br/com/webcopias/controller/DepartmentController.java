@@ -2,7 +2,9 @@ package br.com.webcopias.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +17,7 @@ import javax.faces.model.ListDataModel;
 import org.primefaces.model.DualListModel;
 
 import br.com.webcopias.dao.DepartmentImpl;
+import br.com.webcopias.dao.DisciplineImpl;
 import br.com.webcopias.dao.UserImpl;
 import br.com.webcopias.model.Department;
 import br.com.webcopias.model.Discipline;
@@ -28,9 +31,14 @@ public class DepartmentController {
 	private String selectedBoss;
 	private HashMap<String, String> heads;
 	private DualListModel<Discipline> listDiscipline;
+	private List<Discipline> disciplineToList;
 
 	public DepartmentController(){
-		this.department = new Department();
+		DisciplineImpl disciplineImpl = new DisciplineImpl();
+		List<Discipline> source = disciplineImpl.getDisciplinesList();
+		List<Discipline> target = new ArrayList<Discipline>();
+		
+		this.listDiscipline = new DualListModel<Discipline>(source, target);
 	}
 
 	public String getSelectedBoss() {
@@ -55,13 +63,16 @@ public class DepartmentController {
 	}
 	
 	public DualListModel<Discipline> getListDiscipline() {
-		
-		
 		return listDiscipline;
 	}
 
 	public void setListDiscipline(DualListModel<Discipline> listDiscipline) {
 		this.listDiscipline = listDiscipline;
+	}
+	
+	public List<Discipline> getDisciplineToList() {
+		List<Discipline> disciplineToList = (this.getDepartment() == null)?new ArrayList<Discipline>():new ArrayList<Discipline>(this.getDepartment().getDiscipline());
+		return disciplineToList;
 	}
 	
 	public DataModel<Department> getListDepartments(){
@@ -105,7 +116,10 @@ public class DepartmentController {
 		}else if(this.getSelectedBoss() == null){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o nome do departamento.");
 		}else{
+			Set<Discipline> discs = new HashSet<Discipline>(this.getListDiscipline().getTarget());
+			
 			this.getDepartment().setRegistration(userImpl.getUser(this.getSelectedBoss()));
+			this.getDepartment().setDiscipline(discs);
 			
 			try{
 				departmentImpl.save(this.getDepartment());
@@ -120,11 +134,12 @@ public class DepartmentController {
 	}
 
 	/**
-	 * Atualiza usuario
+	 * Atualiza departamento
 	 * @param actionEvent
 	 */
 	public void updateDepartment(ActionEvent actionEvent){
 		DepartmentImpl departmentImpl = new DepartmentImpl();
+		UserImpl userImpl = new UserImpl();
 		FacesMessage msg = null;
 		
 		/*
@@ -138,10 +153,12 @@ public class DepartmentController {
 		}else if(this.getDepartment().getRegistration() == null){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar um chefe de departamento.");
 		}else{
+			Set<Discipline> discs = new HashSet<Discipline>(this.getListDiscipline().getTarget());
 			
+			this.getDepartment().setDiscipline(discs);
 			try{
 				departmentImpl.update(this.getDepartment());
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Departamento " + this.getDepartment().getDepartmentName() + " criado.");
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Departamento " + this.getDepartment().getDepartmentName() + " atualizado.");
 			}catch(RuntimeException e){
 				e.printStackTrace();
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um erro ao criar o departamento.");
@@ -168,14 +185,6 @@ public class DepartmentController {
 		}
 		
 		return boss;
-	}
-
-	/*
-	 * Getters e Setters não utilizados
-	 */
-	
-	public void setHeads(HashMap<String, String> heads) {
-		this.heads = heads;
 	}
 
 }
