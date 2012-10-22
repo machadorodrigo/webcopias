@@ -32,8 +32,7 @@ public class DisciplineController {
 		
 		List<User> source = userImpl.getUsersList();
 		List<User> target = new ArrayList<User>();
-		System.out.println("Construtor " + this.getDiscipline());
-		this.users = (this.getDiscipline() == null)? new DualListModel<User>(source,target):getDisciplinesDualList();
+		this.users = new DualListModel<User>(source,target);
 	}
 
 	public Discipline getDiscipline() {
