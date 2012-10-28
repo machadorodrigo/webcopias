@@ -298,7 +298,7 @@ public class UserController {
 				if(registration.equals(usr.getRegistration())) return true;
 			}
 		}
-		
+
 		return false;
 	}
 	
