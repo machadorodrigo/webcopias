@@ -34,11 +34,14 @@ public class DepartmentController {
 	private List<Discipline> disciplineToList;
 
 	public DepartmentController(){
+		
 		DisciplineImpl disciplineImpl = new DisciplineImpl();
 		List<Discipline> source = disciplineImpl.getDisciplinesList();
 		List<Discipline> target = new ArrayList<Discipline>();
 		
 		this.listDiscipline = new DualListModel<Discipline>(source, target);
+		
+		this.disciplineToList = disciplineImpl.getDisciplinesList();
 	}
 
 	public String getSelectedBoss() {
@@ -71,7 +74,14 @@ public class DepartmentController {
 	}
 	
 	public List<Discipline> getDisciplineToList() {
-		List<Discipline> disciplineToList = (this.getDepartment() == null)?new ArrayList<Discipline>():new ArrayList<Discipline>(this.getDepartment().getDiscipline());
+		Discipline disc = new Discipline();
+		List<Discipline> disciplineToList = null;
+		if(this.getDepartment() == null || this.getDepartment().getDiscipline() == null){
+			disciplineToList = new ArrayList<Discipline>();
+		}else{
+			disciplineToList = new ArrayList<Discipline>(this.getDepartment().getDiscipline());
+		}
+		
 		return disciplineToList;
 	}
 	
@@ -111,10 +121,14 @@ public class DepartmentController {
 		/*
 		 * Validações 
 		 */
-		if(this.getDepartment().getDepartamentCode() == null){
+		if(this.getDepartment().getDepartamentCode() == null || this.getDepartment().getDepartamentCode().equals("")){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o código do departamento.");
-		}else if(this.getSelectedBoss() == null){
+		}else if(this.getDepartment().getDepartmentName() == null || this.getDepartment().getDepartmentName().equals("")){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o nome do departamento.");
+		}else if(this.getSelectedBoss() == null || this.getSelectedBoss().equals("")){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o chefe do departamento.");
+		}else if(this.getListDiscipline().getTarget().size() == 0){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário adicionar ao menos umas disciplina.");
 		}else{
 			Set<Discipline> discs = new HashSet<Discipline>(this.getListDiscipline().getTarget());
 			
@@ -146,19 +160,23 @@ public class DepartmentController {
 		 * Validações 
 		 */
 		
-		if(this.getDepartment().getDepartamentCode() == null){
+		if(this.getDepartment().getDepartamentCode() == null || this.getDepartment().getDepartamentCode().equals("")){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o código do departamento.");
-		}else if(this.getDepartment().getDepartmentName() == null){
+		}else if(this.getDepartment().getDepartmentName() == null || this.getDepartment().getDepartmentName().equals("")){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o nome do departamento.");
-		}else if(this.getDepartment().getRegistration() == null){
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar um chefe de departamento.");
+		}else if(this.getSelectedBoss() == null || this.getSelectedBoss().equals("")){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário informar o chefe do departamento.");
+		}else if(this.getListDiscipline().getTarget().size() == 0){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "É necessário adicionar ao menos umas disciplina.");
 		}else{
 			Set<Discipline> discs = new HashSet<Discipline>(this.getListDiscipline().getTarget());
 			
+			this.getDepartment().setRegistration(userImpl.getUser(this.getSelectedBoss()));
 			this.getDepartment().setDiscipline(discs);
+			
 			try{
 				departmentImpl.update(this.getDepartment());
-				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Departamento " + this.getDepartment().getDepartmentName() + " atualizado.");
+				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Departamento " + this.getDepartment().getDepartmentName() + " criado.");
 			}catch(RuntimeException e){
 				e.printStackTrace();
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Ocorreu um erro ao criar o departamento.");

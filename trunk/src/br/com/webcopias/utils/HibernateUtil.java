@@ -1,11 +1,16 @@
 package br.com.webcopias.utils;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
+import br.com.webcopias.dao.UserImpl;
 import br.com.webcopias.model.CentralCopy;
 import br.com.webcopias.model.CentralHistory;
 import br.com.webcopias.model.Department;
@@ -61,5 +66,26 @@ public class HibernateUtil {
 
 //	public static void main(String[] args) {
 //		HibernateUtil.getSessionFactory();
+//		
+//		Role role = new Role();
+//		User user = new User();
+//		UserImpl userImpl = new UserImpl();
+//		Set<Role> roleset = new HashSet<Role>();
+//		
+//		role.setDescription("Administrador");
+//		role.setName("ROLE_ADM");
+//
+//		roleset.add(role);
+//		
+//		user.setActive(true);
+//		user.setCopyLimit(20);
+//		user.setEmail("adm@webcopias.com");
+//		user.setName("Administrador");
+//		user.setPassword("adm");
+//		user.setRegistration("adm");
+//		user.setRegistrationDate(new Date());
+//		user.setRole(roleset);
+//		
+//		userImpl.save(user);
 //	}
 }
