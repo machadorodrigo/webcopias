@@ -3,7 +3,7 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>WebCópias - Manutenção de Usuários</title>
+	<title>WebCópias - Manutenção de Departamentos</title>
 	<link rel="shortcut icon" href="../assets/image/favicon.ico" />
 	<link rel="stylesheet" href="../assets/css/styleDepartment.css" />
 </h:head>
@@ -22,7 +22,7 @@
 		<p:layoutUnit position="center" styleClass="content" header="Manutenção de Departamentos">
 			<h:form id="datatableForm">
 
-				<p:dataTable id="departmentDatatable" var="departments" value="#{department.listDepartments}" widgetVar="departmentsList" styleClass="datatable-department">
+				<p:dataTable id="departmentDatatable" emptyMessage="Nenhum departamento cadastrado" var="departments" value="#{department.listDepartments}" widgetVar="departmentsList" styleClass="datatable-department">
 					<f:facet name="header">
 						<p:commandButton id="btAddDepartment" styleClass="addDepartmentButton"
 						update=":formAddDepartment:panelAddDepartment" actionListener="#{department.prepareCreateDepartment}"
@@ -83,7 +83,7 @@
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>
-	
+
 	<p:dialog header="Adicionar Departamento" widgetVar="addNewDepartment" resizable="false" modal="true" showEffect="fade" width="600">
 		<h:form prependId="false" id="formAddDepartment">
 			<h:panelGrid id="panelAddDepartment" columns="2" style="margin-bottom:10px">
@@ -97,7 +97,7 @@
 				<p:selectOneMenu id="addBoss" value="#{department.selectedBoss}">
 					<f:selectItems value="#{department.heads}" />
 				</p:selectOneMenu>
-				
+
 				<f:facet name="footer">
 					<p:pickList id="departmentsPickList" value="#{department.listDiscipline}" var="departmentList"   
 	                itemLabel="#{departmentList.disciplineName}" itemValue="#{departmentList}" converter="disciplineConverter">
@@ -107,18 +107,18 @@
 	        			
 	                </p:pickList> 
 				</f:facet>
-				
+
 				<f:facet name="footer">
 					<p:separator/>
 					<p:commandButton actionListener="#{department.createNewDepartment}" oncomplete="addNewDepartment.hide()" 
-					update=":datatableForm:departmentDatatable :resultMessage" value="Comfirmar" />
+					update=":datatableForm:departmentDatatable :resultMessage" value="Confirmar" />
 				
 					<p:commandButton oncomplete="addNewDepartment.hide()" value="Fechar" />
 				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>
-	
+
 	<p:dialog header="Informações do Departamento" widgetVar="viewDepartment" resizable="false" modal="true" showEffect="fade" width="600">
 		<h:form prependId="false" id="formViewDepartment">
 			<h:panelGrid id="panelViewDepartment" columns="2" style="margin-bottom:10px">
@@ -135,7 +135,7 @@
 				<p:dataList value="#{department.disciplineToList}" id="dataListDiscipline" var="discList" itemType="circle">  
     				#{discList.disciplineName} 
 				</p:dataList>
-				
+
 				<f:facet name="footer">
 					<p:separator/>
 					<p:commandButton oncomplete="viewDepartment.hide()" value="Fechar" />
@@ -181,7 +181,7 @@
 	<h:form>  
 	    <p:confirmDialog id="confirmDeleteDepartment" message="Deseja remover este departamento?" header="Remover departamento" severity="alert" widgetVar="confirmationDeleteDepartment">  
 	        <p:commandButton id="confirmDelete" value="Sim" onclick="confirmDeleteDepartment.hide()" update=":datatableForm:departmentDatatable :resultMessage" actionListener="#{department.deleteDepartment}" />  
-	        <p:commandButton id="decline" value="Não" onclick="confirmDeleteDepartment.hide()" type="button" />   
+	        <p:commandButton id="decline" value="Não" onclick="confirmDeleteDepartment.hide()" />   
 	    </p:confirmDialog>  
 	</h:form>
 </body>

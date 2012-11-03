@@ -10,6 +10,7 @@ import br.com.webcopias.utils.HibernateUtil;
 
 public class UserImpl extends GenericHibernate<User> implements UserDao{
 	
+	@Override
 	public User getUser(String registration) {
 		User user = null;
 		Session session = null;
@@ -27,6 +28,7 @@ public class UserImpl extends GenericHibernate<User> implements UserDao{
     }
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public List<User> getUsersList() {
 		List<User> users = null;
 		Session session = null;

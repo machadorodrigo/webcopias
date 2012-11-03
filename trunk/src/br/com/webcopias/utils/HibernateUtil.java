@@ -10,6 +10,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
+import br.com.webcopias.dao.RoleImpl;
 import br.com.webcopias.dao.UserImpl;
 import br.com.webcopias.model.CentralCopy;
 import br.com.webcopias.model.CentralHistory;
@@ -20,6 +21,7 @@ import br.com.webcopias.model.Parameter;
 import br.com.webcopias.model.Role;
 import br.com.webcopias.model.Service;
 import br.com.webcopias.model.User;
+import br.com.webcopias.model.UserRequest;
 
 public class HibernateUtil {
 	private static SessionFactory sessionFactory;
@@ -48,6 +50,7 @@ public class HibernateUtil {
 				configuration.addAnnotatedClass(Document.class);
 				configuration.addAnnotatedClass(Parameter.class);
 				configuration.addAnnotatedClass(Service.class);
+				configuration.addAnnotatedClass(UserRequest.class);
 
 				sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 //				SchemaExport se = new SchemaExport(configuration);
@@ -67,14 +70,35 @@ public class HibernateUtil {
 //	public static void main(String[] args) {
 //		HibernateUtil.getSessionFactory();
 //		
-//		Role role = new Role();
 //		User user = new User();
 //		UserImpl userImpl = new UserImpl();
 //		Set<Role> roleset = new HashSet<Role>();
 //		
+//		Role role = new Role();
+//		RoleImpl roleImpl = new RoleImpl();
+//		
 //		role.setDescription("Administrador");
 //		role.setName("ROLE_ADM");
-//
+//		roleset.add(role);
+//		roleImpl.save(role);
+//		
+//		role.setDescription("Operador");
+//		role.setName("ROLE_OPERATOR");
+//		roleset.add(role);
+//		roleImpl.save(role);
+//		
+//		role.setDescription("Professor");
+//		role.setName("ROLE_TEACHER");
+//		roleset.add(role);
+//		roleImpl.save(role);
+//		
+//		role.setDescription("Chefe de Departamento");
+//		role.setName("ROLE_BOSS");
+//		roleset.add(role);
+//		roleImpl.save(role);
+//		
+//		role.setDescription("Administrador");
+//		role.setName("ROLE_ADM");
 //		roleset.add(role);
 //		
 //		user.setActive(true);
