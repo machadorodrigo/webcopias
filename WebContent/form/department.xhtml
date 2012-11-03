@@ -85,38 +85,38 @@
 	</p:dialog>
 
 	<p:dialog header="Adicionar Departamento" widgetVar="addNewDepartment" resizable="false" modal="true" showEffect="fade" width="600">
-		<h:form prependId="false" id="formAddDepartment">
 			<h:panelGrid id="panelAddDepartment" columns="2" style="margin-bottom:10px">
-				<h:outputLabel for="addCode" value="Código:" />
-				<p:inputText value="#{department.department.departamentCode}" id="addCode" size="10"/>
-
-				<h:outputLabel for="addName" value="Nome:" />
-				<p:inputText value="#{department.department.departmentName}" id="addName" size="30"/>
-
-				<h:outputLabel for="addBoss" value="Chefe do departamento:" />
-				<p:selectOneMenu id="addBoss" value="#{department.selectedBoss}">
-					<f:selectItems value="#{department.heads}" />
-				</p:selectOneMenu>
-
-				<f:facet name="footer">
-					<p:pickList id="departmentsPickList" value="#{department.listDiscipline}" var="departmentList"   
-	                itemLabel="#{departmentList.disciplineName}" itemValue="#{departmentList}" converter="disciplineConverter">
-	                
-	                	<f:facet name="sourceCaption">Disciplinas existentes</f:facet>  
-	        			<f:facet name="targetCaption">Disciplinas adicionadas</f:facet>
-	        			
-	                </p:pickList> 
-				</f:facet>
-
-				<f:facet name="footer">
-					<p:separator/>
-					<p:commandButton actionListener="#{department.createNewDepartment}" oncomplete="addNewDepartment.hide()" 
-					update=":datatableForm:departmentDatatable :resultMessage" value="Confirmar" />
-				
-					<p:commandButton oncomplete="addNewDepartment.hide()" value="Fechar" />
-				</f:facet>
+				<h:form prependId="false" id="formAddDepartment">
+					<h:outputLabel for="addCode" value="Código:" />
+					<p:inputText value="#{department.department.departamentCode}" id="addCode" size="10"/>
+	
+					<h:outputLabel for="addName" value="Nome:" />
+					<p:inputText value="#{department.department.departmentName}" id="addName" size="30"/>
+	
+					<h:outputLabel for="addBoss" value="Chefe do departamento:" />
+					<p:selectOneMenu id="addBoss" value="#{department.selectedBoss}">
+						<f:selectItems value="#{department.heads}" />
+					</p:selectOneMenu>
+	
+					<f:facet name="footer">
+						<p:pickList id="departmentsPickList" value="#{department.listDiscipline}" var="departmentList"   
+		                itemLabel="#{departmentList.disciplineName}" itemValue="#{departmentList}" converter="disciplineConverter">
+		                
+		                	<f:facet name="sourceCaption">Disciplinas existentes</f:facet>  
+		        			<f:facet name="targetCaption">Disciplinas adicionadas</f:facet>
+		        			
+		                </p:pickList> 
+					</f:facet>
+	
+					<f:facet name="footer">
+						<p:separator/>
+						<p:commandButton actionListener="#{department.createNewDepartment}" oncomplete="addNewDepartment.hide()" 
+						update=":datatableForm:departmentDatatable :resultMessage" value="Confirmar" />
+					
+						<p:commandButton oncomplete="addNewDepartment.hide()" value="Fechar" />
+					</f:facet>
+				</h:form>
 			</h:panelGrid>
-		</h:form>
 	</p:dialog>
 
 	<p:dialog header="Informações do Departamento" widgetVar="viewDepartment" resizable="false" modal="true" showEffect="fade" width="600">

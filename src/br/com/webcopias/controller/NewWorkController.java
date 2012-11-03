@@ -5,14 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.util.HashMap;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.model.UploadedFile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,8 @@ import br.com.webcopias.model.Service;
 import br.com.webcopias.model.User;
 import br.com.webcopias.model.UserRequest;
 
+import org.primefaces.model.UploadedFile;
+
 @ManagedBean(name="work")
 @SessionScoped
 public class NewWorkController {
@@ -37,7 +41,8 @@ public class NewWorkController {
 	private User currentUser;
 	private HashMap<String, Integer> serviceMap;
 	private String comment,documentDescription;
-	private UploadedFile selectedFile;
+	private UploadedFile file;
+	
 	@SuppressWarnings("unused")
 	private boolean belongsDiscipline,hasService,hasParameter;
 	
@@ -60,6 +65,14 @@ public class NewWorkController {
 		this.userRequestList = userRequestImpl.getRequestByUser(this.getCurrentUser());
 	}
 
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+	
 	public UserRequest getSelectedRequest() {
 		return selectedRequest;
 	}
@@ -128,14 +141,6 @@ public class NewWorkController {
 		this.documentDescription = documentDescription;
 	}
 
-	public UploadedFile getSelectedFile() {
-		return selectedFile;
-	}
-
-	public void setSelectedFile(UploadedFile selectedFile) {
-		this.selectedFile = selectedFile;
-	}
-	
 	public boolean getBelongsDiscipline(){
 		DisciplineImpl disciplineImpl = new DisciplineImpl();
 		List<Discipline> listDiscipline = disciplineImpl.getDisciplinesList();
@@ -171,17 +176,29 @@ public class NewWorkController {
 		return (parameterImpl.getParametersList().size() > 0);
 	}
 	
-	public void addWork(ActionEvent actionEvent){
-		if(this.selectedFile != null){
-			System.out.println( "=========== " + this.selectedFile.getFileName());
-			System.out.println( "=========== " + this.selectedFile.getSize());
+	public void addWork(){
+		if(this.file != null){
+			
+			FacesMessage msg = new FacesMessage("Sucesso! ", this.file.getFileName() + " foi enviado.");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			try {
+				copyFile(this.file.getFileName(), this.file.getInputstream(),0);
+			} catch (IOException e) {
+				System.out.println("Erro: " + e);
+			}
+		}else{
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro.", "Nenhum arquivo foi selecionado.");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
 	
-	public void copyFile(String fileName, InputStream in) {
+	public String copyFile(String fileName, InputStream in, int docId) {
+		ParameterImpl parameterImpl = new ParameterImpl();
+		String path = parameterImpl.getParametersList().get(0).getVolume()+"/WebCopias/document/"+docId+"/";
+		
 		try {
 			// write the inputStream to a FileOutputStream
-			OutputStream out = new FileOutputStream(new File(""));
+			OutputStream out = new FileOutputStream(new File(path+fileName));
 
 			int read = 0;
 			byte[] bytes = new byte[5120];
@@ -195,8 +212,11 @@ public class NewWorkController {
 			out.close();
 
 		} catch (IOException e) {
-			System.out.println("Pehhhh, erro: " + e);
+			e.printStackTrace();
+			return null;
 		}
+		
+		return path;
 	}
 
 }

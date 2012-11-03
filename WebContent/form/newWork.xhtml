@@ -19,7 +19,7 @@
 		</p:layoutUnit>
 		
 		<p:layoutUnit position="center" header="Minhas impressões pendentes" styleClass="content">
-			<h:form id="dataGridForm"> 
+			<h:form id="dataGridForm" enctype="multipart/form-data"> 
 				<p:dataGrid var="request" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="3"  
 					rows="12" paginator="true" id="workDataGrid"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
@@ -60,7 +60,7 @@
 	</p:layout>
 	
 	<p:dialog header="Criar Pedido de Impressão" widgetVar="addNewWork" resizable="false" modal="true" showEffect="fade" width="510">
-		<h:form prependId="false" id="formAddWork">
+		<h:form id="formAddWork" enctype="multipart/form-data">
 			<h:panelGrid id="panelAddWork" columns="2" style="margin-bottom:10px">
 				
 				<h:outputLabel for="addService" value="Serviço:" />
@@ -74,17 +74,14 @@
 				<h:outputLabel for="addComment" value="Comentátio:" />
 				<p:inputTextarea id="addComment" cols="50" rows="5" value="#{work.comment}"></p:inputTextarea>
 
-				<h:outputLabel for="addFile" value="Arquivo:" />
-				<p:fileUpload value="#{work.selectedFile}" allowTypes="/(\.|\/)(jpe?g|png|docx|doc|xls|xlsx|pdf)$/" mode="simple" sizeLimit="10000000"
-				 description="Selecione o arquivo: " id="addFile" styleClass="fileField"/>
+				<p:fileUpload value="#{work.file}" mode="simple"/>
 				
 				<h:outputLabel for="addDocumentDescription" value="Descrição do documento:" />
 				<p:inputText id="addDocumentDescription" value="#{work.documentDescription}"/>
 				
 				<f:facet name="footer">
 					<p:separator/>
-					<p:commandButton actionListener="#{work.addWork}" oncomplete="addNewWork.hide()" 
-					update=":dataGridForm:workDataGrid :resultMessage" value="Confirmar" />
+					<p:commandButton action="#{work.addWork}" oncomplete="addNewWork.hide()" ajax="false" value="Confirmar" />
 					
 					<p:commandButton oncomplete="addNewWork.hide()" value="Cancelar" />
 				</f:facet>
