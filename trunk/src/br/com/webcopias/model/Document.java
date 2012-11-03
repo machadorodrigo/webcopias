@@ -9,13 +9,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="DOCUMENTO")
 public class Document {
-	private Integer id,documentType;
-	private String documentName,documentPath,documentDescription;
-	private Double documentSize;
+	private Integer id;
+	private String documentName,documentPath,documentDescription,documentType;
+	private Long documentSize;
 
 	public Document(){};
 	
-	public Document(Integer id, Integer documentType, String documentName, String documentPath, String documentDescription, Double documentSize) {
+	public Document(Integer id, String documentType, String documentName, String documentPath, String documentDescription, Long documentSize) {
 		super();
 		this.id = id;
 		this.documentType = documentType;
@@ -36,11 +36,11 @@ public class Document {
 		this.id = id;
 	}
 	
-	public Integer getDocumentType() {
+	public String getDocumentType() {
 		return documentType;
 	}
 	
-	public void setDocumentType(Integer documentType) {
+	public void setDocumentType(String documentType) {
 		this.documentType = documentType;
 	}
 	
@@ -68,11 +68,11 @@ public class Document {
 		this.documentDescription = documentDescription;
 	}
 	
-	public Double getDocumentSize() {
+	public Long getDocumentSize() {
 		return documentSize;
 	}
 	
-	public void setDocumentSize(Double documentSize) {
+	public void setDocumentSize(Long documentSize) {
 		this.documentSize = documentSize;
 	}
 }

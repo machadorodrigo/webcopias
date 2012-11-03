@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,35 +20,40 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import br.com.webcopias.dao.CentralCopyImpl;
 import br.com.webcopias.dao.DisciplineImpl;
+import br.com.webcopias.dao.DocumentImpl;
 import br.com.webcopias.dao.ParameterImpl;
 import br.com.webcopias.dao.ServiceImpl;
 import br.com.webcopias.dao.UserImpl;
 import br.com.webcopias.dao.UserRequestImpl;
+import br.com.webcopias.model.CentralCopy;
 import br.com.webcopias.model.Discipline;
+import br.com.webcopias.model.Document;
 import br.com.webcopias.model.Service;
 import br.com.webcopias.model.User;
 import br.com.webcopias.model.UserRequest;
 
+import org.hibernate.HibernateException;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name="work")
 @SessionScoped
 public class NewWorkController {
 	private List<Service> serviceList;
-	private List<UserRequest> userRequestList;
+	private List<UserRequest> userRequestList = new ArrayList<UserRequest>();
 	private int selectedService, qtdCopy;
 	private UserRequest selectedRequest;
 	private User currentUser;
 	private HashMap<String, Integer> serviceMap;
-	private String comment,documentDescription;
+	private HashMap<String, String> disciplineMap;
+	private String comment,documentDescription,selectedDiscipline;
 	private UploadedFile file;
 	
 	@SuppressWarnings("unused")
 	private boolean belongsDiscipline,hasService,hasParameter;
 	
 	public NewWorkController(){
-		UserRequestImpl userRequestImpl = new UserRequestImpl();
 		UserImpl userImpl = new UserImpl();
 		
 		SecurityContext context = SecurityContextHolder.getContext();
@@ -61,8 +67,11 @@ public class NewWorkController {
 		}
 		
 		this.serviceMap = new HashMap<String, Integer>();
+		this.disciplineMap = new HashMap<String, String>();
+		
 		this.selectedRequest = new UserRequest();
-		this.userRequestList = userRequestImpl.getRequestByUser(this.getCurrentUser());
+		
+		this.updateDataGrid();
 	}
 
 	public UploadedFile getFile() {
@@ -141,6 +150,19 @@ public class NewWorkController {
 		this.documentDescription = documentDescription;
 	}
 
+	public String getSelectedDiscipline() {
+		return selectedDiscipline;
+	}
+
+	public void setSelectedDiscipline(String selectedDiscipline) {
+		this.selectedDiscipline = selectedDiscipline;
+	}
+	
+	private void updateDataGrid(){
+		UserRequestImpl userRequestImpl = new UserRequestImpl();
+		this.userRequestList = userRequestImpl.getRequestByUser(this.getCurrentUser());
+	}
+	
 	public boolean getBelongsDiscipline(){
 		DisciplineImpl disciplineImpl = new DisciplineImpl();
 		List<Discipline> listDiscipline = disciplineImpl.getDisciplinesList();
@@ -171,6 +193,21 @@ public class NewWorkController {
 		return this.serviceMap;
 	}
 	
+	public HashMap<String, String> getDisciplineMap(){
+		DisciplineImpl disciplineImpl = new DisciplineImpl();
+		List<Discipline> lDiscipline = disciplineImpl.getDisciplinesList();
+		
+		for(Discipline d : lDiscipline){
+			for(User u : d.getRegistration()){
+				if(u.getRegistration().equals(this.getCurrentUser().getRegistration())){
+					this.disciplineMap.put(d.getDisciplineName(), d.getDisciplineCode());
+				}
+			}
+		}
+		
+		return this.disciplineMap;
+	}
+	
 	public boolean getHasParameter(){
 		ParameterImpl parameterImpl = new ParameterImpl();
 		return (parameterImpl.getParametersList().size() > 0);
@@ -178,30 +215,62 @@ public class NewWorkController {
 	
 	public void addWork(){
 		if(this.file != null){
+			System.out.println(this.file.getFileName());
 			
-			FacesMessage msg = new FacesMessage("Sucesso! ", this.file.getFileName() + " foi enviado.");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			try {
-				copyFile(this.file.getFileName(), this.file.getInputstream(),0);
-			} catch (IOException e) {
-				System.out.println("Erro: " + e);
+			ParameterImpl parameterImpl = new ParameterImpl();
+			
+			ServiceImpl serviceImpl = new ServiceImpl();
+			Service service = serviceImpl.getService(this.selectedService);
+			
+			String path = parameterImpl.getParametersList().get(0).getVolume();
+			FacesMessage msg = null;
+			String docPath = null;
+			
+			Document doc = this.createDocument(this.file, this.documentDescription, path);
+			
+			if(doc == null){
+				msg = new FacesMessage("Erro! ", "Ocorreu um erro ao adicionar o documento.");
+			}else{
+				try {
+					docPath = copyFile(this.file.getFileName(), this.file.getInputstream(),doc.getId(),path);
+				} catch (IOException e) {
+					e.printStackTrace();
+					msg = new FacesMessage("Erro! ", "Ocorreu um erro ao fazer o upload do documento.");
+					this.deleteDocument(doc);
+				}
+				
+				if(docPath != null){
+					CentralCopy centralCopy = this.createCentralCopy(doc.getId(), service);
+					if(centralCopy != null){
+						this.createUserRequest(centralCopy,doc,service);
+						msg = new FacesMessage("Sucesso! ", "A tarefa de código "+ centralCopy.getId() +" de impressão foi criada.");
+					}else{
+						msg = new FacesMessage("Erro! ", "Ocorreu um erro ao criar a impressão.");
+					}
+				}else{
+				}
 			}
+			
+			this.updateDataGrid();
+			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}else{
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro.", "Nenhum arquivo foi selecionado.");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
 	
-	public String copyFile(String fileName, InputStream in, int docId) {
-		ParameterImpl parameterImpl = new ParameterImpl();
-		String path = parameterImpl.getParametersList().get(0).getVolume()+"/WebCopias/document/"+docId+"/";
+	public String copyFile(String fileName, InputStream in, int docId, String volume) {
+		
+		String absolutePath = volume+"/WebCopias/document/"+docId+"/";
 		
 		try {
-			// write the inputStream to a FileOutputStream
-			OutputStream out = new FileOutputStream(new File(path+fileName));
+			File file = new File(absolutePath);
+			if(!file.exists()) file.mkdir();
+			
+			OutputStream out = new FileOutputStream(new File(file.getAbsolutePath()+"/"+fileName));
 
 			int read = 0;
-			byte[] bytes = new byte[5120];
+			byte[] bytes = new byte[10124];
 
 			while ((read = in.read(bytes)) != -1) {
 				out.write(bytes, 0, read);
@@ -216,9 +285,85 @@ public class NewWorkController {
 			return null;
 		}
 		
-		return path;
+		return absolutePath;
 	}
 
+	private Document createDocument(UploadedFile file, String description, String path){
+		Document document = new Document();
+		DocumentImpl documentImpl = new DocumentImpl();
+		Document docInfo = new Document();
+		
+		String[] fileExt = file.getFileName().split("\\.");
+		
+		document.setDocumentType(fileExt[fileExt.length-1]);
+		document.setDocumentName(fileExt[0]);
+		document.setDocumentDescription((description == null)?"":description);
+		document.setDocumentPath(path+"\\WebCopias\\document");
+		document.setDocumentSize(file.getSize());
+		
+		try{
+			docInfo = documentImpl.save(document);
+		}catch(HibernateException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		return docInfo;
+	}
+	
+	private boolean deleteDocument(Document document){
+		DocumentImpl documentImpl = new DocumentImpl();
+		
+		try{
+			documentImpl.remove(document);
+		}catch(HibernateException e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private CentralCopy createCentralCopy(int docId, Service service){
+		CentralCopyImpl centralCopyImpl = new CentralCopyImpl();
+		CentralCopy centralCopy = new CentralCopy();
+		
+		centralCopy.setActive(true);
+		centralCopy.setDiscipline(this.getSelectedDiscipline());
+		centralCopy.setDocument(docId);
+		centralCopy.setObservation(this.getComment());
+		centralCopy.setQuantityCopy(this.qtdCopy);
+		centralCopy.setUserRegistration(this.currentUser.getRegistration());
+		centralCopy.setServiceName(service.getServiceName());
+		centralCopy.setServiceCost(service.getServiceCost());
+		
+		try{
+			centralCopy = centralCopyImpl.save(centralCopy);
+		}catch(HibernateException e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		return centralCopy;
+	}
+
+	private void createUserRequest(CentralCopy centralCopy, Document document, Service service){
+		UserRequest userRequest = new UserRequest();
+		UserRequestImpl userRequestImpl = new UserRequestImpl();
+		
+		userRequest.setActive(true);
+		userRequest.setCentral(centralCopy);
+		userRequest.setDocument(document);
+		userRequest.setServiceCost(service.getServiceCost());
+		userRequest.setServiceName(service.getServiceName());
+		userRequest.setUser(this.getCurrentUser());
+
+		try{
+			userRequestImpl.save(userRequest);
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}
+	}
 }
 
 

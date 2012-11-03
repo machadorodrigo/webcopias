@@ -19,8 +19,8 @@
 		</p:layoutUnit>
 		
 		<p:layoutUnit position="center" header="Minhas impressões pendentes" styleClass="content">
-			<h:form id="dataGridForm" enctype="multipart/form-data"> 
-				<p:dataGrid var="request" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="3"  
+			<h:form id="dataGridForm"> 
+				<p:dataGrid var="userRequest" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="5"  
 					rows="12" paginator="true" id="workDataGrid"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
 					rowsPerPageTemplate="9,12,15">  
@@ -41,16 +41,14 @@
 						
 						<p:commandButton rendered="#{work.belongsDiscipline and work.hasService and work.hasParameter}" id="btAddWork" 
 						styleClass="addWorkButton" actionListener="#{work.prepareCreateWork}"
-						oncomplete="addNewWork.show()"
+						oncomplete="addNewWork.show()" update=":formAddWork:panelAddWork"
 						value="Adicionar Impressão" icon="ui-icon-circle-plus" title="Adicionar Impressão" />
 					</f:facet>
 					
-					<p:panel header="#{request.central.id}" style="text-align:center">  
+					<p:panel header="Código da tarefa: #{userRequest.central.id}" style="text-align:center">  
 						<h:panelGrid columns="1" style="width:100%">  
 					
-							<h:outputText value="#{request.document.documentDescription}" />
-							<h:outputText value="#{request.central.quantityCopy}" />
-							<h:outputText value="#{request.service.serviceName}" />
+							<h:outputText value="#{userRequest.serviceName}" />
 							
 						</h:panelGrid>  
 					</p:panel>
@@ -68,20 +66,26 @@
 					<f:selectItems value="#{work.serviceMap}" />
 				</p:selectOneMenu>
 				
+				<h:outputLabel for="addDiscipline" value="Disciplina:" />
+				<p:selectOneMenu id="addDiscipline" value="#{work.selectedDiscipline}">
+					<f:selectItems value="#{work.disciplineMap}" />
+				</p:selectOneMenu>
+				
 				<h:outputLabel for="addCopyQtd" value="Quantidade de cópias:" />
 				<p:spinner id="addCopyQtd" value="#{work.qtdCopy}" size="5"/>
 				
 				<h:outputLabel for="addComment" value="Comentátio:" />
 				<p:inputTextarea id="addComment" cols="50" rows="5" value="#{work.comment}"></p:inputTextarea>
 
-				<p:fileUpload value="#{work.file}" mode="simple"/>
+				<p:outputLabel for="addFile" value="Arquivo:"/>
+				<p:fileUpload value="#{work.file}" mode="simple" id="addFile"/>
 				
 				<h:outputLabel for="addDocumentDescription" value="Descrição do documento:" />
 				<p:inputText id="addDocumentDescription" value="#{work.documentDescription}"/>
 				
 				<f:facet name="footer">
 					<p:separator/>
-					<p:commandButton action="#{work.addWork}" oncomplete="addNewWork.hide()" ajax="false" value="Confirmar" />
+					<p:commandButton action="#{work.addWork}" oncomplete="addNewWork.hide()" update=":dataGridForm:workDataGrid :resultMessage" ajax="false" value="Confirmar" />
 					
 					<p:commandButton oncomplete="addNewWork.hide()" value="Cancelar" />
 				</f:facet>

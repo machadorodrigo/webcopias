@@ -14,6 +14,9 @@ public class UserRequestImpl extends GenericHibernate<UserRequest> implements Us
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserRequest> getRequestByUser(User user) {
+		
+		System.out.println("User ............................ " + user.getRegistration());
+		
 		List<UserRequest> userRequest = null;
 		Session session = null;
 		try{
