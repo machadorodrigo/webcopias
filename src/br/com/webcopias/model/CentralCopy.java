@@ -11,24 +11,28 @@ import javax.persistence.Table;
 @Table(name="CENTRAL_COPIAS")
 public class CentralCopy {
 
-	private Integer id,quantityCopy,serviceType,discipline;
-	private String userRegistration,document,observation;
+	private Integer id,quantityCopy,document;
+	private String userRegistration,observation,discipline,serviceName;
 	private Boolean active;
+	private Double serviceCost;
 	
 	public CentralCopy(){};
 	
-	public CentralCopy(Integer id, Integer quantityCopy, Integer serviceType,
-			Integer discipline, String userRegistration, String document,
-			String observation, Boolean active) {
+	public CentralCopy(Integer id, Integer quantityCopy, String serviceName,
+			String discipline, String userRegistration, Integer document,
+			String observation, Boolean active, Double serviceCost) {
+		
 		super();
+		
 		this.id = id;
 		this.quantityCopy = quantityCopy;
-		this.serviceType = serviceType;
+		this.serviceName = serviceName;
 		this.discipline = discipline;
 		this.userRegistration = userRegistration;
 		this.document = document;
 		this.observation = observation;
 		this.active = active;
+		this.serviceCost = serviceCost;
 	}
 
 	
@@ -59,14 +63,6 @@ public class CentralCopy {
 		this.userRegistration = userRegistration;
 	}
 	
-	public Integer getServiceType() {
-		return serviceType;
-	}
-	
-	public void setServiceType(Integer serviceType) {
-		this.serviceType = serviceType;
-	}
-
 	public String getObservation() {
 		return observation;
 	}
@@ -75,11 +71,11 @@ public class CentralCopy {
 		this.observation = observation;
 	}
 
-	public String getDocument() {
+	public Integer getDocument() {
 		return document;
 	}
 
-	public void setDocument(String document) {
+	public void setDocument(Integer document) {
 		this.document = document;
 	}
 	
@@ -92,11 +88,27 @@ public class CentralCopy {
 		this.active = active;
 	}
 
-	public Integer getDiscipline() {
+	public String getDiscipline() {
 		return discipline;
 	}
 
-	public void setDiscipline(Integer discipline) {
+	public void setDiscipline(String discipline) {
 		this.discipline = discipline;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public Double getServiceCost() {
+		return serviceCost;
+	}
+
+	public void setServiceCost(Double serviceCost) {
+		this.serviceCost = serviceCost;
 	}
 }
