@@ -3,7 +3,7 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>WebCópias - Manutenção de Usuários</title>
+	<title>WebCópias - Central de Tarefas</title>
 	<link rel="shortcut icon" href="../assets/image/favicon.ico" />
 	<link rel="stylesheet" href="../assets/css/styleCentralTask.css" />
 </h:head>
@@ -39,9 +39,10 @@
 				<h:outputLabel for="updatePhoto" value="Foto:" />
 				<p:inputText value="#{user.loggedUser.photo}" id="updatePhoto" required="false" />
 
-				<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar" >
-					<f:ajax event="click" execute="updateName" render="userMenu" update="userMenu"/>
-				</p:commandButton>
+				<f:facet name="footer">
+					<p:separator/>
+					<p:commandButton oncomplete="updateAccount.hide()" actionListener="#{user.selfUpdateUser}" update=":resultMessage" value="Salvar"/>
+				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>

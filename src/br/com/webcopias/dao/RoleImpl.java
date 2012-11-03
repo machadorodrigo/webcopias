@@ -13,6 +13,7 @@ import br.com.webcopias.utils.HibernateUtil;
 
 public class RoleImpl extends GenericHibernate<Role> implements RoleDao{
 	
+	@Override
 	public Role getRole(String registration) {
 		Role role = null;
 		Session session = null;
@@ -31,6 +32,7 @@ public class RoleImpl extends GenericHibernate<Role> implements RoleDao{
     }
 	
 	@SuppressWarnings("unchecked")
+	@Override
 	public Set<Role> getRolesByList(String name) {
         Session session = null;
         List<Role> roles = null;
