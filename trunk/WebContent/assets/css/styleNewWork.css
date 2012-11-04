@@ -97,3 +97,19 @@ body{
 .inputText{
 	font-size: 11px !important;
 }
+
+.panelGridBox span{
+	font-size: 11px !important;
+}
+
+.panelGridBox td{
+	font-size: 11px !important;
+}
+
+.dataGrid span{
+	font-size: 11px !important;
+}
+
+.dataGrid select {
+	font-size: 11px !important;
+}

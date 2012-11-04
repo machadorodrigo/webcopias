@@ -74,33 +74,32 @@ public class HibernateUtil {
 //		UserImpl userImpl = new UserImpl();
 //		Set<Role> roleset = new HashSet<Role>();
 //		
-//		Role role = new Role();
 //		RoleImpl roleImpl = new RoleImpl();
 //		
+//		Role role = new Role();
 //		role.setDescription("Administrador");
 //		role.setName("ROLE_ADM");
 //		roleset.add(role);
 //		roleImpl.save(role);
 //		
+//		role = new Role();
 //		role.setDescription("Operador");
 //		role.setName("ROLE_OPERATOR");
 //		roleset.add(role);
 //		roleImpl.save(role);
 //		
+//		role = new Role();
 //		role.setDescription("Professor");
 //		role.setName("ROLE_TEACHER");
 //		roleset.add(role);
 //		roleImpl.save(role);
 //		
+//		role = new Role();
 //		role.setDescription("Chefe de Departamento");
 //		role.setName("ROLE_BOSS");
 //		roleset.add(role);
 //		roleImpl.save(role);
-//		
-//		role.setDescription("Administrador");
-//		role.setName("ROLE_ADM");
-//		roleset.add(role);
-//		
+//				
 //		user.setActive(true);
 //		user.setCopyLimit(20);
 //		user.setEmail("adm@webcopias.com");

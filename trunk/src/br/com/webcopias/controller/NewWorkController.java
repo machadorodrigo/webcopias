@@ -68,7 +68,6 @@ public class NewWorkController {
 		
 		this.serviceMap = new HashMap<String, Integer>();
 		this.disciplineMap = new HashMap<String, String>();
-		
 		this.selectedRequest = new UserRequest();
 		
 		this.updateDataGrid();
@@ -214,28 +213,29 @@ public class NewWorkController {
 	}
 	
 	public void addWork(){
-		if(this.file != null){
-			System.out.println(this.file.getFileName());
-			
+		FacesMessage msg = validateWork();
+		
+		if(msg != null){
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}else if(this.file != null){
 			ParameterImpl parameterImpl = new ParameterImpl();
 			
 			ServiceImpl serviceImpl = new ServiceImpl();
 			Service service = serviceImpl.getService(this.selectedService);
 			
 			String path = parameterImpl.getParametersList().get(0).getVolume();
-			FacesMessage msg = null;
 			String docPath = null;
 			
 			Document doc = this.createDocument(this.file, this.documentDescription, path);
 			
 			if(doc == null){
-				msg = new FacesMessage("Erro! ", "Ocorreu um erro ao adicionar o documento.");
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "Ocorreu um erro ao adicionar o documento.");
 			}else{
 				try {
 					docPath = copyFile(this.file.getFileName(), this.file.getInputstream(),doc.getId(),path);
 				} catch (IOException e) {
 					e.printStackTrace();
-					msg = new FacesMessage("Erro! ", "Ocorreu um erro ao fazer o upload do documento.");
+					msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "Ocorreu um erro ao fazer o upload do documento.");
 					this.deleteDocument(doc);
 				}
 				
@@ -254,7 +254,7 @@ public class NewWorkController {
 			this.updateDataGrid();
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}else{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro.", "Nenhum arquivo foi selecionado.");
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Erro.", "Nenhum arquivo foi selecionado.");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
@@ -295,11 +295,12 @@ public class NewWorkController {
 		
 		String[] fileExt = file.getFileName().split("\\.");
 		
-		document.setDocumentType(fileExt[fileExt.length-1]);
+		document.setDocumentType(fileExt[fileExt.length-1].toLowerCase());
 		document.setDocumentName(fileExt[0]);
 		document.setDocumentDescription((description == null)?"":description);
 		document.setDocumentPath(path+"\\WebCopias\\document");
 		document.setDocumentSize(file.getSize());
+		document.setUserRegistration(this.currentUser.getRegistration());
 		
 		try{
 			docInfo = documentImpl.save(document);
@@ -364,6 +365,17 @@ public class NewWorkController {
 			e.printStackTrace();
 		}
 	}
+	
+	private FacesMessage validateWork(){
+		FacesMessage msg = null;
+		
+		if(this.qtdCopy == 0){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "É necessário informar a quantidade de cópias.");
+		}
+		
+		return msg;
+	}
+
 }
 
 

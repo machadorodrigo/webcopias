@@ -10,17 +10,19 @@ import javax.persistence.Table;
 @Table(name="DOCUMENTO")
 public class Document {
 	private Integer id;
-	private String documentName,documentPath,documentDescription,documentType;
+	private String documentName,documentPath,documentDescription,documentType,userRegistration;
 	private Long documentSize;
 
 	public Document(){};
 	
-	public Document(Integer id, String documentType, String documentName, String documentPath, String documentDescription, Long documentSize) {
+	public Document(Integer id, String documentType, String documentName, String userRegistration,
+			String documentPath, String documentDescription, Long documentSize) {
 		super();
 		this.id = id;
 		this.documentType = documentType;
 		this.documentName = documentName;
 		this.documentPath = documentPath;
+		this.userRegistration = userRegistration;
 		this.documentDescription = documentDescription;
 		this.documentSize = documentSize;
 	}
@@ -74,5 +76,13 @@ public class Document {
 	
 	public void setDocumentSize(Long documentSize) {
 		this.documentSize = documentSize;
+	}
+
+	public String getUserRegistration() {
+		return userRegistration;
+	}
+
+	public void setUserRegistration(String userRegistration) {
+		this.userRegistration = userRegistration;
 	}
 }
