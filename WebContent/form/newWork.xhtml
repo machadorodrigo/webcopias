@@ -20,10 +20,10 @@
 		
 		<p:layoutUnit position="center" header="Minhas impressões pendentes" styleClass="content">
 			<h:form id="dataGridForm"> 
-				<p:dataGrid var="userRequest" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="5"  
-					rows="12" paginator="true" id="workDataGrid"
+				<p:dataGrid var="userRequest" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="3"  
+					rows="3" paginator="true" id="workDataGrid"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-					rowsPerPageTemplate="9,12,15">  
+					rowsPerPageTemplate="4,8,16" styleClass="dataGrid">  
 					
 					<f:facet name="header">
 						<h:outputText rendered="#{!work.hasService}" styleClass="outputLabel"
@@ -45,10 +45,14 @@
 						value="Adicionar Impressão" icon="ui-icon-circle-plus" title="Adicionar Impressão" />
 					</f:facet>
 					
-					<p:panel header="Código da tarefa: #{userRequest.central.id}" style="text-align:center">  
+					<p:panel header="Código da tarefa: #{userRequest.central.id}" styleClass="panelGridBox" style="text-align:center">  
 						<h:panelGrid columns="1" style="width:100%">  
 					
-							<h:outputText value="#{userRequest.serviceName}" />
+							<p:graphicImage value="../assets/image/#{userRequest.document.documentType}.png"/> 
+					
+							<h:outputText value="Serviço: #{userRequest.serviceName}" />
+							<h:outputText value="Cópias: #{userRequest.serviceName}" />
+							<h:outputText value="Custo total: R$ #{userRequest.serviceCost * userRequest.central.quantityCopy}" />
 							
 						</h:panelGrid>  
 					</p:panel>
@@ -78,7 +82,8 @@
 				<p:inputTextarea id="addComment" cols="50" rows="5" value="#{work.comment}"></p:inputTextarea>
 
 				<p:outputLabel for="addFile" value="Arquivo:"/>
-				<p:fileUpload value="#{work.file}" mode="simple" id="addFile"/>
+				<p:fileUpload value="#{work.file}" mode="simple" id="addFile" allowTypes="/(\.|\/)(pdf|doc|png|jpg?g|docx|xls|xlsx|txt)$/"
+				sizeLimit="100000" invalidFileMessage="A extensão do arquivo não é válida." invalidSizeMessage="O limite de tamanho é 10mb."/>
 				
 				<h:outputLabel for="addDocumentDescription" value="Descrição do documento:" />
 				<p:inputText id="addDocumentDescription" value="#{work.documentDescription}"/>
@@ -95,7 +100,7 @@
 	
 	<p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="slide" width="500">
 		<h:form prependId="false">
-			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
+			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px" >
 				<h:outputLabel for="updateRegistration" value="Matrícula:" />
 				<p:inputText value="#{user.loggedUser.registration}" id="updateRegistration" disabled="true" />
 
