@@ -368,11 +368,15 @@ public class NewWorkController {
 	
 	private FacesMessage validateWork(){
 		FacesMessage msg = null;
+		String[] fileExt = this.file.getFileName().split("\\.");
+		
+		System.out.println(fileExt[fileExt.length-1].toLowerCase());
 		
 		if(this.qtdCopy == 0){
 			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "É necessário informar a quantidade de cópias.");
+		}else if("doc,docx,xls,xlsx,pdf,jpg,jpeg,png,txt".indexOf(fileExt[fileExt.length-1].toLowerCase()) == -1){
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "Tipo de arquivo não permitido.");
 		}
-		
 		return msg;
 	}
 
