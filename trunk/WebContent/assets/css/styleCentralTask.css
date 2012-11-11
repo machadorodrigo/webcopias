@@ -86,14 +86,45 @@ body{
 	font-size: 11px !important;
 }
 
-.addWorkButton span{
-	font-size: 11px !important;
-}
-
 .outputLabel{
 	font-size: 11px !important;
 }
 
 .inputText{
+	font-size: 11px !important;
+}
+
+.column-datatable{
+	font-size: 11px !important;
+}
+
+.value-datatable{
+	font-size: 11px !important;
+}
+
+.datatable-central{
+	margin-left: -1px !important;
+}
+
+.type-file-div{
+	width: 100px;
+	height: 100px;
+	border: 1px solid silver;
+	margin-top: 15px;
+	margin-left: 15px;
+	background-color: #f5f5f5;
+	text-align: center;
+}
+
+.text-in-div{
+	font-size: 13px !important;
+	font-weight: bold;
+}
+
+.image-icon{
+	margin-top: 20px;
+}
+
+.commonButton span{
 	font-size: 11px !important;
 }

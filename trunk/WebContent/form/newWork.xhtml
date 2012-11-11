@@ -21,9 +21,9 @@
 		<p:layoutUnit position="center" header="Minhas impressões pendentes" styleClass="content">
 			<h:form id="dataGridForm"> 
 				<p:dataGrid var="userRequest" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="3"  
-					rows="3" paginator="true" id="workDataGrid"
+					rows="6" paginator="true" id="workDataGrid"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-					rowsPerPageTemplate="9,18,24" styleClass="dataGrid">  
+					rowsPerPageTemplate="6,12,18" styleClass="dataGrid">  
 					
 					<f:facet name="header">
 						<h:outputText rendered="#{!work.hasService}" styleClass="outputLabel"
@@ -54,6 +54,11 @@
 							<h:outputText value="Cópias: #{userRequest.serviceName}" />
 							<h:outputText value="Custo total: R$ #{userRequest.serviceCost * userRequest.central.quantityCopy}" />
 							<h:outputText value="Comentário: #{userRequest.central.observation}" />
+							
+							<p:commandLink update=":dataGridForm:workDataGrid :resultMessage" oncomplete="confirmationCancelWork.show()" title="Cancelar impressão">  
+			                    <h:outputText styleClass="ui-icon ui-icon-circle-close" style="margin:0 auto;" />   
+			                    <f:setPropertyActionListener value="#{userRequest}" target="#{work.selectedRequest}"/>  
+			                </p:commandLink>
 						</h:panelGrid>  
 					</p:panel>
 				</p:dataGrid>
@@ -90,14 +95,20 @@
 				
 				<f:facet name="footer">
 					<p:separator/>
-					<p:commandButton action="#{work.addWork}" oncomplete="addNewWork.hide()" update=":dataGridForm:workDataGrid :resultMessage" ajax="false" value="Confirmar" />
-					
+					<p:commandButton action="#{work.addWork}" oncomplete="addNewWork.hide()" ajax="false" value="Confirmar" />
 					<p:commandButton oncomplete="addNewWork.hide()" value="Cancelar" />
 				</f:facet>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>
-
+	
+	<h:form>  
+	    <p:confirmDialog id="confirmCancelWork" message="Deseja Cancelar essa impressão?" header="Cancelar impressão" severity="alert" widgetVar="confirmationCancelWork">  
+	        <p:commandButton id="confirmCancel" value="Sim" onclick="confirmationCancelWorkk.hide()" update=":dataGridForm:workDataGrid :resultMessage" actionListener="#{work.cancelWork}" />  
+	        <p:commandButton id="decline" value="Não" onclick="confirmationCancelWork.hide()" />   
+	    </p:confirmDialog>  
+	</h:form>
+	
 	<p:dialog header="Alterar Conta" widgetVar="updateAccount" resizable="false" modal="true" showEffect="slide" width="500">
 		<h:form prependId="false">
 			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px" >

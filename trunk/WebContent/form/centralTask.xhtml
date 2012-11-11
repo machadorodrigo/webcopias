@@ -6,6 +6,11 @@
 	<title>WebCópias - Central de Tarefas</title>
 	<link rel="shortcut icon" href="../assets/image/favicon.ico" />
 	<link rel="stylesheet" href="../assets/css/styleCentralTask.css" />
+	<script type="text/javascript">
+		function redirectWork(id){
+			window.location = ("/WebCopias/form/viewWork.jsf?taskid="+id);
+		}
+	</script>
 </h:head>
 <body>
 	<p:growl id="resultMessage" showDetail="true" life="4000" />
@@ -16,8 +21,30 @@
 		<p:layoutUnit position="west" size="200" header="Navegação" collapsible="true"	styleClass="menu" style="padding:0 !important;">
 			<ui:include src="/form/menu.xhtml"></ui:include>
 		</p:layoutUnit>
-		<p:layoutUnit position="center" styleClass="content">
-			<h:form>
+		<p:layoutUnit position="center" styleClass="content" header="Central de Tarefas">
+			<h:form id="datatableForm">
+				<p:dataTable id="centralDatatable" emptyMessage="Nenhuma impressão pendente" var="centralCopy" value="#{central.listCentralInfo}" widgetVar="departmentsList" styleClass="datatable-central">
+			        <p:column headerText="Código" style="width:10%" styleClass="column-datatable">  
+			            <h:outputText value="#{centralCopy.centralCopy.id}" styleClass="value-datatable"/>  
+			        </p:column>  
+			        <p:column headerText="Serviço" style="width:25%" styleClass="column-datatable">  
+			            <h:outputText value="#{centralCopy.centralCopy.serviceName}" styleClass="value-datatable"/>  
+			        </p:column>  
+			        <p:column headerText="Quantidade" style="width:10%" styleClass="column-datatable">  
+			            <h:outputText value="#{centralCopy.centralCopy.quantityCopy}" styleClass="value-datatable"/>  
+			        </p:column>  
+			        <p:column headerText="Tipo" style="width:10%" styleClass="column-datatable">  
+			            <h:outputText value="#{centralCopy.document.documentType}" styleClass="value-datatable"/>  
+			        </p:column>
+			        <p:column headerText="Usuário" style="width:40%" styleClass="column-datatable">  
+			            <h:outputText value="#{centralCopy.user.name}" styleClass="value-datatable"/>  
+			        </p:column>
+			        <p:column style="width:5%; text-align:center !important;" styleClass="column-datatable">  
+	                	<p:commandButton id="btViewDepartment" oncomplete="redirectWork(#{centralCopy.centralCopy.id})"
+	                	 icon="ui-icon-search" title="Visualisar impressão"> 
+		            	</p:commandButton>  
+			        </p:column>  
+			    </p:dataTable>
 			</h:form>
 		</p:layoutUnit>
 	</p:layout>

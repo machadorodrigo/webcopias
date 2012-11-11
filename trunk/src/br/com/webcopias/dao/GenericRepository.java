@@ -5,7 +5,7 @@ public interface GenericRepository<E> {
 
 	void merge(E entity);
 
-	void remove(final E entity);
+	boolean remove(final E entity);
 
 	E save(E entity);
 
