@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>WebCópias - Central de Tarefas</title>
+	<link rel="shortcut icon" href="../assets/image/favicon.ico" />
+	<link rel="stylesheet" href="../assets/css/styleCentralTask.css" />
+	<script type="text/javascript">
+		function redirectWork(id) {
+			window.location = ("/WebCopias/form/viewWork.jsf?taskid=" + id);
+		}
+	</script>
+</h:head>
+<h:body>
+	<p:growl id="resultMessage" showDetail="true" life="4000" />
+	<p:layout fullPage="true" styleClass="container">
+		<p:layoutUnit position="north" size="95" resizable="false"
+			closable="false" collapsible="false" styleClass="header">
+			<ui:include src="/form/header.xhtml"></ui:include>
+		</p:layoutUnit>
+		<p:layoutUnit position="west" size="200" header="Navegação"
+			collapsible="true" styleClass="menu" style="padding:0 !important;">
+			<ui:include src="/form/menu.xhtml"></ui:include>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="content"
+			header="Tarefa: #{param.taskid}">
+				<p:layout id="layout">
+					<p:layoutUnit position="west" size="130" minSize="130" maxSize="130"
+						style="max-height:85%;margin-top:25px !important;border:none;">
+	
+						<div class="type-file-div">
+							<table style="width: 100%;">
+								<tr style="width: 100%;">
+									<td style="text-align: center;"><p:graphicImage
+											value="../assets/image/#{viewWork.centralTaskInfoModel.document.documentType}.png"
+											styleClass="image-icon" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText styleClass="text-in-div"
+											value="Tipo: #{viewWork.centralTaskInfoModel.document.documentType}"
+											escape="true" /></td>
+								</tr>
+							</table>
+						</div>
+					</p:layoutUnit>
+	
+					<p:layoutUnit position="center"
+						style="max-height:85%;margin-top:25px !important;border:none;">
+							<h:panelGrid columns="2" cellpadding="10">
+								<h:outputText value="Código da tarefa:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.centralCopy.id}" />
+		
+								<h:outputText value="Usuário:" />
+								<h:outputText value="#{viewWork.centralTaskInfoModel.user.name}" />
+		
+								<h:outputText value="Serviço:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.centralCopy.serviceName}" />
+		
+								<h:outputText value="Quantidade:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.centralCopy.quantityCopy}" />
+		
+								<h:outputText value="Preço:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.centralCopy.quantityCopy * viewWork.centralTaskInfoModel.centralCopy.serviceCost}" />
+		
+								<h:outputText value="Documento:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.document.documentName}" />
+		
+								<h:outputText value="Tamanho do documento:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.document.documentSize}" />
+		
+								<h:outputText value="Observação:" />
+								<h:outputText
+									value="#{viewWork.centralTaskInfoModel.centralCopy.observation}" />
+		
+									<f:facet name="footer">
+										<h:form id="formFile" prependId="false">
+											<p:commandButton id="btDownloadFile" styleClass="commonButton"
+												ajax="false" value="Baixar arquivo" icon="ui-icon-disk"
+												title="Baixar arquivo">
+												<p:fileDownload value="#{viewWork.file}" />
+											</p:commandButton>
+										</h:form>
+									</f:facet>
+							</h:panelGrid>
+					</p:layoutUnit>
+				</p:layout>
+		</p:layoutUnit>
+	</p:layout>
+
+	<p:dialog header="Alterar Conta" widgetVar="updateAccount"
+		resizable="false" modal="true" showEffect="slide" width="500">
+		<h:form prependId="false">
+			<h:panelGrid id="infosLivro" columns="2" style="margin-bottom:10px">
+				<h:outputLabel for="updateRegistration" value="Matrícula:" />
+				<p:inputText value="#{user.loggedUser.registration}"
+					id="updateRegistration" disabled="true" />
+
+				<h:outputLabel for="updateName" value="Nome:" />
+				<p:inputText value="#{user.loggedUser.name}" id="updateName" />
+
+				<h:outputLabel for="updatePassword" value="Senha:" />
+				<h:inputSecret value="#{user.loggedUser.password}"
+					id="updatePassword"
+					styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-hover" />
+
+				<h:outputLabel for="updateEmail" value="E-mail:" />
+				<p:inputText value="#{user.loggedUser.email}" id="updateEmail"
+					required="false" />
+
+				<h:outputLabel for="updatePhoto" value="Foto:" />
+				<p:inputText value="#{user.loggedUser.photo}" id="updatePhoto"
+					required="false" />
+
+				<f:facet name="footer">
+					<p:separator />
+					<p:commandButton oncomplete="updateAccount.hide()"
+						actionListener="#{user.selfUpdateUser}" update=":resultMessage"
+						value="Salvar" />
+				</f:facet>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>

@@ -380,20 +380,38 @@ public class NewWorkController {
 		return msg;
 	}
 
+	public void cancelWork(ActionEvent actionEvent){
+		FacesMessage msg = null;
+		
+		if(this.selectedRequest != null){
+			UserRequestImpl userRequestImpl = new UserRequestImpl();
+			boolean deleteWork = false;
+			CentralCopyImpl centralCopyImpl = new CentralCopyImpl();
+			CentralCopy centralCopy = centralCopyImpl.getCentralCopy(this.selectedRequest.getCentral().getId());
+			if(centralCopy != null){
+				try{
+					deleteWork = userRequestImpl.remove(this.selectedRequest);
+				}catch(HibernateException e){
+					msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "Ocorreu um erro ao cancelar a impressão.");
+					e.printStackTrace();
+				}
+				if(deleteWork){
+					try {
+						centralCopyImpl.remove(centralCopy);
+						this.updateDataGrid();
+						msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "A impressão foi cancelada com sucesso.");
+					} catch (Exception e) {
+						e.printStackTrace();
+						msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "Ocorreu um erro ao cancelar a impressão.");
+					}
+				}
+			}else{
+				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "A impressão já foi cancelada ou realizada.");
+			}
+		}else{
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,	"Erro!", "Ocorreu um erro ao cancelar" +
+					" a impressão. Não foi possível selecionar o registro para deleta-lo.");
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

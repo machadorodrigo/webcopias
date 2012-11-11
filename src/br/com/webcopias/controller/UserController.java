@@ -19,9 +19,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import br.com.webcopias.dao.CentralCopyImpl;
 import br.com.webcopias.dao.DepartmentImpl;
 import br.com.webcopias.dao.DisciplineImpl;
 import br.com.webcopias.dao.UserImpl;
+import br.com.webcopias.model.CentralCopy;
 import br.com.webcopias.model.Department;
 import br.com.webcopias.model.Discipline;
 import br.com.webcopias.model.Role;
@@ -322,6 +324,19 @@ public class UserController {
 
 		return false;
 	}
+	
+	public boolean containsPendingWork(String registration) {
+		CentralCopyImpl centralCopyImpl = new CentralCopyImpl();
+		List<CentralCopy> centralCopies = centralCopyImpl.getCentralCopyList();
+		
+		for (CentralCopy c : centralCopies) {
+			if (registration.equals(c.getUserRegistration())){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	public void deleteUser(ActionEvent acEvent) {
 		UserImpl userImpl = new UserImpl();
@@ -332,19 +347,22 @@ public class UserController {
 					.equals(this.getLoggedUser().getRegistration())) {
 				msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!",
 						"Não é possível remover seu próprio usuário.");
-			} else if (this.containsUserInDepartment(this.getSelectedUser()
-					.getRegistration())) {
+			} else if (this.containsUserInDepartment(this.getSelectedUser().getRegistration())) {
 				msg = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						"Erro!",
 						"Não é possível remover este usuário, pois ele está relacionado a um ou mais departamentos.");
-			} else if (this.containsUserInDiscipline(this.getSelectedUser()
-					.getRegistration())) {
+			} else if (this.containsUserInDiscipline(this.getSelectedUser().getRegistration())) {
 				msg = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						"Erro!",
 						"Não é possível remover este usuário, pois ele está relacionado a uma ou mais disciplinas.");
-			} else {
+			}else if(this.containsPendingWork(this.getSelectedUser().getRegistration())){
+				msg = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						"Erro!",
+						"Não é possível remover este usuário, pois ele possui impressões pendentes.");
+			}else {
 				userImpl.remove(this.getSelectedUser());
 				msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!",
 						"O usuário foi removido.");

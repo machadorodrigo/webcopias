@@ -1,5 +1,6 @@
 package br.com.webcopias.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -32,14 +33,20 @@ public abstract class GenericHibernate<E> extends HibernateDaoSupport implements
 	}
 
 	@Override
-	public void remove(E entity) {
+	public boolean remove(E entity) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		Transaction t = session.beginTransaction();
-		session.delete(entity);
-		t.commit();
-		session.flush();
-		session.close();
+		try{
+			Transaction t = session.beginTransaction();
+			session.delete(entity);
+			t.commit();
+		}catch(HibernateException e){
+			e.printStackTrace();
+			return false;
+		}finally{
+			session.flush();
+			session.close();
+		}
+		return true;
 	}
 
 	@Override
