@@ -23,6 +23,9 @@
 		</p:layoutUnit>
 		<p:layoutUnit position="center" styleClass="content" header="Central de Tarefas">
 			<h:form id="datatableForm">
+				
+				<p:poll interval="5" update=":datatableForm:centralDatatable"/>
+			
 				<p:dataTable id="centralDatatable" emptyMessage="Nenhuma impressão pendente" var="centralCopy" value="#{central.listCentralInfo}" widgetVar="departmentsList" styleClass="datatable-central">
 			        <p:column headerText="Código" style="width:10%" styleClass="column-datatable">  
 			            <h:outputText value="#{centralCopy.centralCopy.id}" styleClass="value-datatable"/>  

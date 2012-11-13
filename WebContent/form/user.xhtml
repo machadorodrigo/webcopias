@@ -32,7 +32,7 @@
 		<p:layoutUnit position="center" styleClass="content" header="Manutenção de Usuários">
 			<h:form id="datatableForm">
 
-				<p:poll interval="5" update=":datatableForm:userDatatable"/>
+				<p:poll interval="3" update=":datatableForm:userDatatable"/>
 				
 				<p:dataTable id="userDatatable" emptyMessage="Nenhum usuário encontrado" var="users" value="#{user.listUsers}" widgetVar="usersList" styleClass="datatable-user">
 					<f:facet name="header">

@@ -5,14 +5,12 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>WebCópias</title>
-	<link rel="stylesheet" href="assets/css/styleLogin.css" />
+	<link rel="stylesheet" href="assets/css/styleLogin.css" style="float:none;margin: 0 auto;"/>
 	<link rel="shortcut icon" href="assets/image/favicon.ico"/>
 </h:head>
 <h:body styleClass="customBody">
+	
 	<form action="j_spring_security_check" method="post">
-		<p:confirmDialog id="confirmDialog" message="Erro" header="Usuário ou senha incorretos." widgetVar="confirmation" severity="alert" rendered="#{param.erro}">  
-	        <p:commandButton id="confirm" value="OK"/>  
-	    </p:confirmDialog> 
 		<p:panel id="loginPanel" header="Login" styleClass="customPanel">
 			<h:panelGrid columns="2">
 				<h:outputLabel for="j_username" value="Matrícula: "/>
