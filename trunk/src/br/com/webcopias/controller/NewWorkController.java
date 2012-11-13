@@ -328,7 +328,7 @@ public class NewWorkController {
 	private CentralCopy createCentralCopy(int docId, Service service){
 		CentralCopyImpl centralCopyImpl = new CentralCopyImpl();
 		CentralCopy centralCopy = new CentralCopy();
-		
+
 		centralCopy.setActive(true);
 		centralCopy.setDiscipline(this.getSelectedDiscipline());
 		centralCopy.setDocument(docId);
@@ -337,14 +337,14 @@ public class NewWorkController {
 		centralCopy.setUserRegistration(this.currentUser.getRegistration());
 		centralCopy.setServiceName(service.getServiceName());
 		centralCopy.setServiceCost(service.getServiceCost());
-		
+
 		try{
 			centralCopy = centralCopyImpl.save(centralCopy);
 		}catch(HibernateException e){
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		return centralCopy;
 	}
 

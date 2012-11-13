@@ -13,43 +13,46 @@
 		<p:layoutUnit position="north" size="95" resizable="false" closable="false"	collapsible="false" styleClass="header">
 			<ui:include src="/form/header.xhtml"></ui:include>
 		</p:layoutUnit>
-		
+
 		<p:layoutUnit position="west" size="200" header="Navegação" collapsible="true"	styleClass="menu" style="padding:0 !important;">
 			<ui:include src="/form/menu.xhtml"></ui:include>
 		</p:layoutUnit>
-		
+
 		<p:layoutUnit position="center" header="Minhas impressões pendentes" styleClass="content">
 			<h:form id="dataGridForm"> 
+			
+				<p:poll interval="5" update=":dataGridForm:workDataGrid"/>
+			
 				<p:dataGrid var="userRequest" emptyMessage="Nenhuma impressão pendente" value="#{work.userRequestList}" columns="3"  
 					rows="6" paginator="true" id="workDataGrid"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
 					rowsPerPageTemplate="6,12,18" styleClass="dataGrid">  
-					
+
 					<f:facet name="header">
 						<h:outputText rendered="#{!work.hasService}" styleClass="outputLabel"
 						value="- Não é possível adicionar uma impressão enquanto não tiver nenhum serviço cadastrado" />
-						
+
 						<h:outputText rendered="#{!work.hasService}" styleClass="outputLabel" value="&lt;br/&gt;" escape="false" />
-						
+
 						<h:outputText rendered="#{!work.hasParameter}" styleClass="outputLabel"
 						value="- Os parâmetros do sistema não foram cadastrados, contate o administrador do sistema" />
-						
+
 						<h:outputText rendered="#{!work.hasParameter}" styleClass="outputLabel" value="&lt;br/&gt;" escape="false" />
-						
+
 						<h:outputText rendered="#{!work.belongsDiscipline}" styleClass="outputLabel"
 						value="- Seu usuário precisa pertencer a pelo menos uma disciplina para poder requisitar uma impressão" />
-						
+
 						<p:commandButton rendered="#{work.belongsDiscipline and work.hasService and work.hasParameter}" id="btAddWork" 
 						styleClass="addWorkButton" actionListener="#{work.prepareCreateWork}"
 						oncomplete="addNewWork.show()" update=":formAddWork:panelAddWork"
 						value="Adicionar Impressão" icon="ui-icon-circle-plus" title="Adicionar Impressão" />
 					</f:facet>
-					
+
 					<p:panel header="Código da tarefa: #{userRequest.central.id}" styleClass="panelGridBox" style="text-align:center">  
 						<h:panelGrid columns="1" style="width:100%">  
-					
+
 							<p:graphicImage value="../assets/image/#{userRequest.document.documentType}.png"/> 
-					
+
 							<h:outputText value="Serviço: #{userRequest.serviceName}" />
 							<h:outputText value="Cópias: #{userRequest.serviceName}" />
 							<h:outputText value="Custo total: R$ #{userRequest.serviceCost * userRequest.central.quantityCopy}" />
@@ -65,11 +68,11 @@
 			</h:form>
 		</p:layoutUnit>
 	</p:layout>
-	
+
 	<p:dialog header="Criar Pedido de Impressão" widgetVar="addNewWork" resizable="false" modal="true" showEffect="fade" width="510">
 		<h:form id="formAddWork" enctype="multipart/form-data">
 			<h:panelGrid id="panelAddWork" columns="2" style="margin-bottom:10px">
-				
+
 				<h:outputLabel for="addService" value="Serviço:" />
 				<p:selectOneMenu id="addService" value="#{work.selectedService}">
 					<f:selectItems value="#{work.serviceMap}" />
