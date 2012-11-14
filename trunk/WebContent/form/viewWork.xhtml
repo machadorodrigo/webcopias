@@ -7,15 +7,24 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>WebCópias - Central de Tarefas</title>
+	<script type="text/javascript" src="../js/viewWorkScript.js"></script>
 	<link rel="shortcut icon" href="../assets/image/favicon.ico" />
 	<link rel="stylesheet" href="../assets/css/styleCentralTask.css" />
 	<script type="text/javascript">
 		function redirectWork(id) {
 			window.location = ("/WebCopias/form/viewWork.jsf?taskid=" + id);
 		}
+		
+		function init(){
+			document.getElementById("taskId").value = getParam("taskid");
+		}
+		
+		function downloadFile(){
+			window.open("/WebCopias/DownloadFile?taskid="+document.getElementById("taskId").value)
+		}
 	</script>
 </h:head>
-<h:body>
+<h:body onload="init()">
 	<p:growl id="resultMessage" showDetail="true" life="4000" />
 	<p:layout fullPage="true" styleClass="container">
 		<p:layoutUnit position="north" size="95" resizable="false"
@@ -51,6 +60,8 @@
 					<p:layoutUnit position="center"
 						style="max-height:85%;margin-top:25px !important;border:none;">
 							<h:panelGrid columns="2" cellpadding="10">
+								<h:inputHidden id="taskId" />
+							
 								<h:outputText value="Código da tarefa:" />
 								<h:outputText
 									value="#{viewWork.centralTaskInfoModel.centralCopy.id}" />
@@ -83,11 +94,10 @@
 									value="#{viewWork.centralTaskInfoModel.centralCopy.observation}" />
 		
 									<f:facet name="footer">
-										<h:form id="formFile" prependId="false">
+										<h:form>
 											<p:commandButton id="btDownloadFile" styleClass="commonButton"
 												ajax="false" value="Baixar arquivo" icon="ui-icon-disk"
-												title="Baixar arquivo">
-												<p:fileDownload value="#{viewWork.file}" />
+												title="Baixar arquivo" onclick="downloadFile()">
 											</p:commandButton>
 										</h:form>
 									</f:facet>
