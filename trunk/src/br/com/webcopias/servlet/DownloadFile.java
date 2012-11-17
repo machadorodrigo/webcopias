@@ -31,17 +31,10 @@ public class DownloadFile extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("taskid");
-		byte[] buffer = new byte[10240];
+		byte[] buffer = new byte[1024];
 		int fileLength;
-
+		
 		FileInputStream input = null;
 		ServletOutputStream out = null;
 		
@@ -55,6 +48,11 @@ public class DownloadFile extends HttpServlet {
 		document = documentImpl.getDocument(centralCopy.getDocument());
 		
 		String fullPath = document.getDocumentPath()+"\\"+document.getId()+"\\"+document.getDocumentName()+"."+document.getDocumentType();
+		
+		response.setHeader("Content-Disposition", "attachment;filename=\""+(document.getDocumentName()+"."+document.getDocumentType())+"\"");
+		response.setHeader("Content-Type", this.prepareContentType(document.getDocumentType()));
+		response.setHeader("Accept-Ranges", "bytes");
+		response.setContentType("application/octet-stream");
 		
 		try{
 			input = new FileInputStream(fullPath);
@@ -71,11 +69,13 @@ public class DownloadFile extends HttpServlet {
 			out.flush();
 			out.close();
 		}
-		
-		response.setHeader("Content-Disposition", "attachment;filename=\""+(document.getDocumentName()+"."+document.getDocumentType())+"\"");
-		response.setHeader("Content-Type", this.prepareContentType(document.getDocumentType()));
-		response.setHeader("Accept-Ranges", "bytes");
-		response.setContentType("application/octet-stream");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 	
 	private String prepareContentType(String docType){

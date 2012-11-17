@@ -11,15 +11,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name="HISTORICO_CENTRAL")
 public class CentralHistory {
-	private Integer id;
-	private String userRegistration,document,serviceType,quantityCopy;
+	private Integer id,document,serviceType,quantityCopy;
+	private String userRegistration;
 	private Double totalValue;
-	private Date dateFinalized;
+	private Date dateFinalized,dateCreation;
 	
 	public CentralHistory(){};
 	
-	public CentralHistory(Integer id, String userRegistration,	String document, String serviceType,
-			String quantityCopy, Double totalValue, Date dateFinalized) {
+	public CentralHistory(Integer id, String userRegistration,	Integer document, Integer serviceType,
+			Integer quantityCopy, Double totalValue, Date dateFinalized, Date dateCreation) {
 		super();
 		this.id = id;
 		this.userRegistration = userRegistration;
@@ -28,6 +28,7 @@ public class CentralHistory {
 		this.quantityCopy = quantityCopy;
 		this.totalValue = totalValue;
 		this.dateFinalized = dateFinalized;
+		this.dateCreation = dateCreation;
 	}
 
 	@Id
@@ -49,27 +50,27 @@ public class CentralHistory {
 		this.userRegistration = userRegistration;
 	}
 	
-	public String getDocument() {
+	public Integer getDocument() {
 		return document;
 	}
 	
-	public void setDocument(String document) {
+	public void setDocument(Integer document) {
 		this.document = document;
 	}
 	
-	public String getServiceType() {
+	public Integer getServiceType() {
 		return serviceType;
 	}
 	
-	public void setServiceType(String serviceType) {
+	public void setServiceType(Integer serviceType) {
 		this.serviceType = serviceType;
 	}
 	
-	public String getQuantityCopy() {
+	public Integer getQuantityCopy() {
 		return quantityCopy;
 	}
 	
-	public void setQuantityCopy(String quantityCopy) {
+	public void setQuantityCopy(Integer quantityCopy) {
 		this.quantityCopy = quantityCopy;
 	}
 	
@@ -87,5 +88,13 @@ public class CentralHistory {
 	
 	public void setDateFinalized(Date dateFinalized) {
 		this.dateFinalized = dateFinalized;
+	}
+
+	public Date getDateCreation() {
+		return dateCreation;
+	}
+
+	public void setDateCreation(Date dateCreation) {
+		this.dateCreation = dateCreation;
 	}
 }

@@ -3,8 +3,7 @@ package br.com.webcopias.controller;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.model.StreamedContent;
+import javax.faces.event.ActionEvent;
 
 import br.com.webcopias.dao.CentralCopyImpl;
 import br.com.webcopias.dao.DocumentImpl;
@@ -19,26 +18,28 @@ import br.com.webcopias.model.User;
 public class ViewWorkController {
 
 	private int workId;
-	private StreamedContent file;
 	private CentralTaskInfoModel centralTaskInfoModel;
 	
 	public ViewWorkController(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		this.workId = Integer.parseInt(facesContext.getExternalContext().getRequestParameterMap().get("taskid"));
 		
-		CentralCopy centralCopy = null;
-		User user = null;
-		Document document = null;
-		
-		CentralCopyImpl centralCopyImpl = new CentralCopyImpl();
-		UserImpl userImpl = new UserImpl();
-		DocumentImpl documentImpl = new DocumentImpl();
-		
-		centralCopy = centralCopyImpl.getCentralCopy(this.workId);
-		user = userImpl.getUser(centralCopy.getUserRegistration());
-		document = documentImpl.getDocument(centralCopy.getDocument());
-		
-		this.centralTaskInfoModel = new CentralTaskInfoModel(user, document, centralCopy);
+		if(facesContext.getExternalContext().getRequestParameterMap().get("taskid") != null){
+			this.workId = Integer.parseInt(facesContext.getExternalContext().getRequestParameterMap().get("taskid"));
+			
+			CentralCopy centralCopy = null;
+			User user = null;
+			Document document = null;
+			
+			CentralCopyImpl centralCopyImpl = new CentralCopyImpl();
+			UserImpl userImpl = new UserImpl();
+			DocumentImpl documentImpl = new DocumentImpl();
+			
+			centralCopy = centralCopyImpl.getCentralCopy(this.workId);
+			user = userImpl.getUser(centralCopy.getUserRegistration());
+			document = documentImpl.getDocument(centralCopy.getDocument());
+			
+			this.centralTaskInfoModel = new CentralTaskInfoModel(user, document, centralCopy);
+		}
 	}
 
 	public int getWorkId() {
@@ -56,8 +57,9 @@ public class ViewWorkController {
 	public void setCentralTaskInfoModel(CentralTaskInfoModel centralTaskInfoModel) {
 		this.centralTaskInfoModel = centralTaskInfoModel;
 	}
-
-	public StreamedContent getFile() {
-		return file;
+	
+	public void cancelTask(ActionEvent event){
+		String attr = (String)event.getComponent().getAttributes().get("taskid");
+		System.out.println(attr);
 	}
 }
