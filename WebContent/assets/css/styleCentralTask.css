@@ -128,3 +128,12 @@ body{
 .commonButton span{
 	font-size: 11px !important;
 }
+
+.span-text{
+	font-size: 11px !important;
+}
+
+.span-text-title{
+	font-size: 11px !important;
+	font-weight: bold !important;
+}

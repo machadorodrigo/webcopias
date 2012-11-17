@@ -37,73 +37,64 @@
 		</p:layoutUnit>
 		<p:layoutUnit position="center" styleClass="content"
 			header="Tarefa: #{param.taskid}">
-				<p:layout id="layout">
-					<p:layoutUnit position="west" size="130" minSize="130" maxSize="130"
-						style="max-height:85%;margin-top:25px !important;border:none;">
-	
-						<div class="type-file-div">
-							<table style="width: 100%;">
-								<tr style="width: 100%;">
-									<td style="text-align: center;"><p:graphicImage
-											value="../assets/image/#{viewWork.centralTaskInfoModel.document.documentType}.png"
-											styleClass="image-icon" /></td>
-								</tr>
-								<tr>
-									<td><h:outputText styleClass="text-in-div"
-											value="Tipo: #{viewWork.centralTaskInfoModel.document.documentType}"
-											escape="true" /></td>
-								</tr>
-							</table>
-						</div>
-					</p:layoutUnit>
-	
-					<p:layoutUnit position="center"
-						style="max-height:85%;margin-top:25px !important;border:none;">
-							<h:panelGrid columns="2" cellpadding="10">
-								<h:inputHidden id="taskId" />
-							
-								<h:outputText value="Código da tarefa:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.centralCopy.id}" />
-		
-								<h:outputText value="Usuário:" />
-								<h:outputText value="#{viewWork.centralTaskInfoModel.user.name}" />
-		
-								<h:outputText value="Serviço:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.centralCopy.serviceName}" />
-		
-								<h:outputText value="Quantidade:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.centralCopy.quantityCopy}" />
-		
-								<h:outputText value="Preço:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.centralCopy.quantityCopy * viewWork.centralTaskInfoModel.centralCopy.serviceCost}" />
-		
-								<h:outputText value="Documento:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.document.documentName}" />
-		
-								<h:outputText value="Tamanho do documento:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.document.documentSize}" />
-		
-								<h:outputText value="Observação:" />
-								<h:outputText
-									value="#{viewWork.centralTaskInfoModel.centralCopy.observation}" />
-		
-									<f:facet name="footer">
-										<h:form>
-											<p:commandButton id="btDownloadFile" styleClass="commonButton"
-												ajax="false" value="Baixar arquivo" icon="ui-icon-disk"
-												title="Baixar arquivo" onclick="downloadFile()">
-											</p:commandButton>
-										</h:form>
-									</f:facet>
-							</h:panelGrid>
-					</p:layoutUnit>
-				</p:layout>
+			<p:layout id="layout">
+				<p:layoutUnit position="west" size="130" minSize="130" maxSize="130"
+					style="max-height:85%;margin-top:25px !important;border:none;">
+
+					<div class="type-file-div">
+						<table style="width: 100%;">
+							<tr style="width: 100%;">
+								<td style="text-align: center;"><p:graphicImage
+										value="../assets/image/#{viewWork.centralTaskInfoModel.document.documentType}.png"
+										styleClass="image-icon" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText styleClass="text-in-div"
+										value="Tipo: #{viewWork.centralTaskInfoModel.document.documentType}"
+										escape="true" /></td>
+							</tr>
+						</table>
+					</div>
+				</p:layoutUnit>
+
+				<h:inputHidden id="taskId" />
+				<p:layoutUnit position="center"	style="max-height:85%;margin-top:25px !important;border:none;">
+					<h:panelGrid columns="2" cellpadding="10">
+					
+						<h:outputText value="Código da tarefa:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.centralCopy.id}" styleClass="span-text"/>
+
+						<h:outputText value="Usuário:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.user.name}" styleClass="span-text"/>
+
+						<h:outputText value="Serviço:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.centralCopy.serviceName}" styleClass="span-text"/>
+
+						<h:outputText value="Quantidade:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.centralCopy.quantityCopy}" styleClass="span-text"/>
+
+						<h:outputText value="Preço:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.centralCopy.quantityCopy * viewWork.centralTaskInfoModel.centralCopy.serviceCost}" styleClass="span-text"/>
+
+						<h:outputText value="Documento:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.document.documentName}" styleClass="span-text"/>
+
+						<h:outputText value="Tamanho do documento:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.document.documentSize}" styleClass="span-text"/>
+
+						<h:outputText value="Observação:" styleClass="span-text-title"/>
+						<h:outputText value="#{viewWork.centralTaskInfoModel.centralCopy.observation}" styleClass="span-text"/>
+
+						<f:facet name="footer">
+							<button type="button" id="btDownload" value="Baixar arquivo" title="Baixar arquivo"
+							 onclick="downloadFile()" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left commonButton ">
+							 	<span class="ui-button-icon-left ui-icon ui-icon-disk"></span>
+							 	<span class="ui-button-text">Baixar arquivo</span>
+							 </button>
+						</f:facet>
+					</h:panelGrid>
+				</p:layoutUnit>
+			</p:layout>
 		</p:layoutUnit>
 	</p:layout>
 

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.webcopias.dao.CentralCopyImpl;
+import br.com.webcopias.dao.CentralHistoryImpl;
 import br.com.webcopias.dao.DisciplineImpl;
 import br.com.webcopias.dao.DocumentImpl;
 import br.com.webcopias.dao.ParameterImpl;
@@ -28,6 +30,7 @@ import br.com.webcopias.dao.ServiceImpl;
 import br.com.webcopias.dao.UserImpl;
 import br.com.webcopias.dao.UserRequestImpl;
 import br.com.webcopias.model.CentralCopy;
+import br.com.webcopias.model.CentralHistory;
 import br.com.webcopias.model.Discipline;
 import br.com.webcopias.model.Document;
 import br.com.webcopias.model.Service;
@@ -212,6 +215,9 @@ public class NewWorkController {
 		return (parameterImpl.getParametersList().size() > 0);
 	}
 	
+	/**
+	 * 
+	 */
 	public void addWork(){
 		FacesMessage msg = validateWork();
 		
@@ -243,6 +249,7 @@ public class NewWorkController {
 					CentralCopy centralCopy = this.createCentralCopy(doc.getId(), service);
 					if(centralCopy != null){
 						this.createUserRequest(centralCopy,doc,service);
+						this.createHistory(centralCopy,doc,service);
 						msg = new FacesMessage("Sucesso! ", "A tarefa de código "+ centralCopy.getId() +" de impressão foi criada.");
 					}else{
 						msg = new FacesMessage("Erro! ", "Ocorreu um erro ao criar a impressão.");
@@ -366,6 +373,20 @@ public class NewWorkController {
 		}
 	}
 	
+	private void createHistory(CentralCopy central, Document document, Service service){
+		CentralHistoryImpl centralHistoryImpl = new CentralHistoryImpl();
+		
+		CentralHistory centralHistory = new CentralHistory();
+		centralHistory.setDocument(document.getId());
+		centralHistory.setQuantityCopy(central.getQuantityCopy());
+		centralHistory.setServiceType(service.getId());
+		centralHistory.setTotalValue(central.getServiceCost()*central.getQuantityCopy());
+		centralHistory.setUserRegistration(central.getUserRegistration());
+		centralHistory.setDateCreation(new Date());
+		
+		centralHistoryImpl.save(centralHistory);
+	}
+	
 	private FacesMessage validateWork(){
 		FacesMessage msg = null;
 		String[] fileExt = this.file.getFileName().split("\\.");
@@ -398,6 +419,7 @@ public class NewWorkController {
 				if(deleteWork){
 					try {
 						centralCopyImpl.remove(centralCopy);
+						this.finalizeHistory(centralCopy.getDocument());
 						this.updateDataGrid();
 						msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "A impressão foi cancelada com sucesso.");
 					} catch (Exception e) {
@@ -413,5 +435,13 @@ public class NewWorkController {
 					" a impressão. Não foi possível selecionar o registro para deleta-lo.");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	private void finalizeHistory(int docId){
+		CentralHistoryImpl centralHistoryImpl = new CentralHistoryImpl();
+		CentralHistory centralHistory = centralHistoryImpl.getCentralHistoryByDocument(docId);
+		
+		centralHistory.setDateFinalized(new Date());
+		centralHistoryImpl.save(centralHistory);
 	}
 }
