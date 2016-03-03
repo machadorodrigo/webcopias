@@ -1,0 +1,1 @@
+Desenvolvimento de um projeto para a matéria de "Projetos de Sistemas de Informação". O projeto consiste em um sistema que fará o controle de uma central de cópias.
